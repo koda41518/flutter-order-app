@@ -1,0 +1,166 @@
+---------------ROLE DE CHAQUE fichier 🧍‍♀️------------------------------------------------------------------------------
+⸻
+    👾:
+    ✅ main.dart
+
+        Rôle : Point d’entrée de l’app.
+
+        💡 Tu y laisses le MaterialApp, le thème global, et tu pointes vers le SplashScreen.
+
+        home: const SplashScreen(),
+
+⸻
+    ✅ screens/splash_screen.dart
+
+        Rôle : Affichage du logo + transition vers SignIn.
+
+        💡 Tu mets ici le widget qui montre le logo FoodMarket + redirection vers SignInScreen.
+
+⸻
+    ✅ screens/sign_in_screen.dart
+
+        Rôle : Écran de connexion.
+
+        💡 Tu y codes :
+            •	Email
+            •	Mot de passe
+            •	Bouton “Sign In”
+            •	Boutons sociaux
+            •	Redirection vers SignUp
+
+⸻
+    ✅ screens/sign_up_screen.dart
+
+        Rôle : Écran d’inscription.
+
+        💡 Tu y ajoutes :
+            •	Ajouter une photo
+            •	Nom, email, mot de passe
+            •	Bouton “Continue”
+            •	Lien retour “Log In”
+
+⸻
+    ✅ widgets/custom_text_field.dart
+
+        Rôle : Champ de formulaire réutilisable.
+
+        💡 Tu y crées un TextField avec :
+            •	label
+            •	hint
+            •	obscureText si c’est un mot de passe
+
+        Exemple d’utilisation dans un écran :
+
+        CustomTextField(
+        label: "Email",
+        hint: "Enter your email",
+        )
+
+
+⸻
+    ✅ widgets_lab.dart
+
+        Rôle : Espace de test libre pour apprendre ou expérimenter.
+
+        💡 Tu peux le laisser vide pour l’instant ou tester des trucs (genre un widget random).
+
+⸻
+    ✅ brouillon.dart
+
+        Rôle : Zone de brouillon perso (non utilisée dans l’app finale)
+
+        💡 Tu peux tester du code rapidement sans impacter le reste.
+
+        
+⸻
+    ✅ note-en-gros.txt
+
+        Rôle : Bah les notes en gros voila 🧙‍♂️ mais il est pas declarer 🕺🏼
+
+En gros:⸻
+
+        ➕ En résumé, tu dois remplir ces 4 fichiers :
+            •	main.dart
+            •	screens/splash_screen.dart
+            •	screens/sign_in_screen.dart
+            •	screens/sign_up_screen.dart
+
+        Et custom_text_field.dart pour ton widget personnalisé
+---------------------------------------------------------------------------------------------------------------------
+remarque :
+
+    🧙‍♂️!ce fichier n est pas lu par l appli dans le run time !
+    👾:"Non, un fichier .txt ou autre type non Dart (comme .md, .json, .png, .jpg) dans ton projet Flutter n’est pas interprété ni compilé automatiquement, donc :
+
+
+        ✅ Tu peux en ajouter autant que tu veux pour :
+            •	Tes notes
+            •	Suivre les tâches (todo.txt)
+            •	Des specs (recap.txt)
+            •	Des copies de code temporaire
+
+        ⚠️ Mais attention : si tu veux lire un fichier .txt dans ton app en runtime, là tu dois :
+            1.	Le déclarer dans pubspec.yaml (assets:)
+            2.	Le lire via rootBundle.loadString('assets/tonfichier.txt')
+
+        ⸻
+
+        Exemple : ajouter un fichier notes.txt (sans être lu par Flutter)
+
+        lib/
+        ├── notes.txt     ✅ ça gêne pas
+        ├── main.dart
+
+        Tant que tu ne le déclares pas dans pubspec.yaml, il ne sera jamais pris en compte par Flutter.
+---------------------------------------------------------------------------------------------------------------------
+
+        
+remarque :
+    /Quand un fichier est barré en rouge dans VS Code, ça veut dire que le fichier a été supprimé, déplacé, ou renommé en dehors de VS Code (genre via le Finder ou le terminal), mais qu’il est encore “ouvert” dans l’éditeur.
+       
+
+---------------------------------------------------------------------------------------------------------------------
+
+la STEP 3 :
+    state management: (react to user actions/update view)
+		Bloc state manager
+
+    🧙‍♂️: pour garder a joure l app faudrait que , Chaque action de l’utilisateur déclenche un événement → l’application réagit en modifiant un état.
+        	•	L’application aura besoin d’un système réactif (les vues changent selon les actions de l’utilisateur),
+            •	Il faut une source centrale de vérité (l’état de l’application),
+            •	Et une façon propre de déclencher les modifications de cet état.
+⸻
+👾
+📌 Pourquoi le choix de BLoC Pattern pour mon application Flutter :
+
+🎯 Objectif général :
+
+Mettre en place une gestion d’état solide, claire et scalable pour une application mobile professionnelle de gestion de commandes, où les données changent souvent en fonction des actions utilisateurs.
+
+⸻
+les avantages 
+    ✅ Raisons du choix de BLoC :
+        1.	Clarté de la logique métier :
+        •	BLoC (Business Logic Component) sépare clairement la logique de l’UI.
+        •	Cela me permet de centraliser toutes les décisions (ex : validation de formulaire, changement d’état, accès base de données…).
+        2.	Réactivité robuste :
+        •	Grâce à la gestion par événements (Event) et états (State), mon app réagit proprement à toutes les actions de l’utilisateur (clics, chargements, erreurs…).
+        3.	Maintenance & scalabilité :
+        •	Si le projet grossit (plusieurs écrans, plus de données, ajout de fonctionnalités), le BLoC permet de garder le contrôle sur le comportement de l’application.
+        •	C’est une approche très utilisée dans les apps pros.
+        4.	Testabilité :
+        •	Avec BLoC, je peux facilement tester la logique sans dépendre de l’UI, ce qui est un avantage dans le contexte d’une application professionnelle.
+        5.	Adopté dans les projets complexes :
+        •	Mon encadrant m’a laissé libre, mais je suppose que pour une app sérieuse, ce type de structure est souvent attendu ou conseillé.
+        •	Mieux vaut apprendre à le maîtriser tôt.
+
+⸻
+
+⚠️ Inconvénient assumé :
+	•	Temps d’apprentissage plus long : #🧍‍♀️cv etre lowkey chiant 
+	•	La structure est plus verbeuse au début (il faut créer les classes Bloc, Event, State)
+	•	Mais je préfère apprendre proprement maintenant, pour gagner du temps plus tard.
+
+⸻
+
+---------------------------------------------------------------------------------------------------------------------
