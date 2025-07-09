@@ -5,17 +5,162 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-        backgroundColor: const Color(0xFFFF002B),
-      ),
-      body: const Center(
-        child: Text(
-          'User Profile',
-          style: TextStyle(fontSize: 18),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: const Color(0xFFFF002B),
+          title: const Text('Profile'),
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: 'Account'),
+              Tab(text: 'FoodMarket'),
+            ],
+          ),
+        ),
+        body: const TabBarView(
+          children: [
+            _AccountTab(),
+            _AppInfoTab(),
+          ],
         ),
       ),
+    );
+  }
+}
+
+class _AccountTab extends StatefulWidget {
+  const _AccountTab();
+
+  @override
+  State<_AccountTab> createState() => _AccountTabState();
+}
+
+class _AccountTabState extends State<_AccountTab> {
+  String fullName = 'John Doe';
+  String email = 'johndoe@example.com';
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        Center(
+          child: CircleAvatar(
+            radius: 50,
+            backgroundImage:
+                NetworkImage('https://i.pravatar.cc/150?img=3'),
+          ),
+        ),
+        const SizedBox(height: 16),
+        ListTile(
+          leading: const Icon(Icons.person),
+          title: Text(fullName),
+          subtitle: const Text('Full Name'),
+          trailing: IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              _editDialog(context, 'Full Name', fullName, (val) {
+                setState(() => fullName = val);
+              });
+            },
+          ),
+        ),
+        ListTile(
+          leading: const Icon(Icons.email),
+          title: Text(email),
+          subtitle: const Text('Email'),
+          trailing: IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              _editDialog(context, 'Email', email, (val) {
+                setState(() => email = val);
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _editDialog(
+      BuildContext context, String field, String initial, Function(String) onSave) {
+    final controller = TextEditingController(text: initial);
+
+    return showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: Text('Edit $field'),
+          content: TextField(controller: controller),
+          actions: [
+            TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel')),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFF002B)),
+                onPressed: () {
+                  onSave(controller.text.trim());
+                  Navigator.pop(context);
+                },
+                child: const Text('Save')),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _AppInfoTab extends StatelessWidget {
+  const _AppInfoTab();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        ListTile(
+          leading: const Icon(Icons.support_agent),
+          title: const Text('Support'),
+          onTap: () {/* TODO: navigate */},
+        ),
+        ListTile(
+          leading: const Icon(Icons.privacy_tip),
+          title: const Text('Privacy Policy'),
+          onTap: () {},
+        ),
+        ListTile(
+          leading: const Icon(Icons.description),
+          title: const Text('Terms & Conditions'),
+          onTap: () {},
+        ),
+        ListTile(
+          leading: const Icon(Icons.logout),
+          title: const Text('Logout'),
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (_) =>
+                  AlertDialog(
+                    title: const Text('Logout'),
+                    content: const Text('Do you really want to logout?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Cancel'),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFF002B)),
+                        onPressed: () {
+                          Navigator.popUntil(context, (route) => route.isFirst);
+                        },
+                        child: const Text('Logout'),
+                      ),
+                    ],
+                  ),
+            );
+          },
+        ),
+      ],
     );
   }
 }
