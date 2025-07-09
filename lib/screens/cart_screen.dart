@@ -30,8 +30,21 @@ class _CartScreenState extends State<CartScreen> {
         backgroundColor: const Color(0xFFFF002B),
       ),
       body: items.isEmpty
-          ? const Center(
-              child: Text('Cart is empty', style: TextStyle(fontSize: 18)),
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/empty_order.png',
+                    width: 200,
+                  ),
+                  const SizedBox(height: 24),
+                  const Text(
+                    'Your cart is empty!',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ],
+              ),
             )
           : ListView.builder(
               itemCount: items.length,
@@ -55,7 +68,8 @@ class _CartScreenState extends State<CartScreen> {
                         onPressed: () => _decrement(item.resto),
                         icon: const Icon(Icons.remove_circle_outline),
                       ),
-                      Text('${item.quantity}', style: const TextStyle(fontSize: 16)),
+                      Text('${item.quantity}',
+                          style: const TextStyle(fontSize: 16)),
                       IconButton(
                         onPressed: () => _increment(item.resto),
                         icon: const Icon(Icons.add_circle_outline),
