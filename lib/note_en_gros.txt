@@ -517,3 +517,27 @@ Etape3 : la gestion de la base de données .
     j avais reussi a ouvrir le simulateur apple , genre un iphone , (wlh j ai meme une video) mais j ai oublier de noté comment j avais fait ducoup j ai oublier et 
     j ai perdu le simulateur ios, des que je trouve comment je note directement
     
+
+🧙‍♂️🫸l instant l arbre : lib/
+                        ├── core/
+                        │   ├── bloc/
+                        │   ├── cart_repository.dart     ✅ LOGIQUE DE PANIER
+                        │   └── models/
+                        │       ├── cart_item.dart       ✅ MODÈLE ITEM PANIER
+                        │       └── restaut.dart
+                        ├── screens/
+                        │   ├── cart_screen.dart         ✅ NOUVELLE PAGE PANIER
+                        │   ├── home_screen.dart
+                        │   ├── main_screen.dart         ✅ NAVIGATION BOTTOM
+                        │   ├── order_screen.dart
+                        │   ├── profile_screen.dart
+                        │   ├── restaut_detail_screen.dart ✅ AJOUT PANIER
+                        │   ├── restaut_list_screen.dart
+                        │   ├── sign_in_screen.dart
+                        │   ├── sign_up_screen.dart
+                        │   ├── splash_screen.dart
+                        │   └── success_sign_up_screen.dart
+                        ├── widgets/
+                        │   └── custom_text_field.dart
+                        ├── main.dart
+                        └── note_en_gros.txt

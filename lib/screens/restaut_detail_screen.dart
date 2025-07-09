@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../core/models/restaut.dart';
+import '../core/cart_repository.dart';
 
 class RestautDetailScreen extends StatelessWidget {
   final Restaut resto;
@@ -8,6 +9,8 @@ class RestautDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cart = CartRepository();
+
     return Scaffold(
       appBar: AppBar(title: Text(resto.name)),
       body: SingleChildScrollView(
@@ -28,12 +31,18 @@ class RestautDetailScreen extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // TODO: Navigate to order/payment screen
+                  cart.add(resto);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Added to cart')),
+                  );
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFF002B)),
-                child: const Text("Order Now"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFFF002B),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+                child: const Text("Add to Cart", style: TextStyle(fontSize: 16)),
               ),
-            )
+            ),
           ],
         ),
       ),
