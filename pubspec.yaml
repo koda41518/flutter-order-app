@@ -58,3 +58,6 @@ flutter:
     - assets/images/success_order.png
     - assets/images/empty_order.png
     - assets/images/loading_anim.gif
+    - assets/images/delivery_in_progress.png
+    - assets/images/Loading-bar.gif
+    - assets/images/Hourglass.gif
