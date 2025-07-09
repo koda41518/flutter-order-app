@@ -5,6 +5,7 @@ class CartRepository {
   static final CartRepository _instance = CartRepository._internal();
   factory CartRepository() => _instance;
   CartRepository._internal();
+
   final List<CartItem> _items = [];
 
   List<CartItem> get items => List.unmodifiable(_items);
@@ -26,7 +27,18 @@ class CartRepository {
 
   // Supprime un plat du panier
   void remove(Restaut resto) {
-    _items.removeWhere((item) => item.resto.name == resto.name);
+    final index = _items.indexWhere((item) => item.resto.name == resto.name);
+    if (index != -1) {
+      final existing = _items[index];
+      if (existing.quantity > 1) {
+        _items[index] = CartItem(
+          resto: existing.resto,
+          quantity: existing.quantity - 1,
+        );
+      } else {
+        _items.removeAt(index);
+      }
+    }
   }
 
   // Vide complètement le panier
