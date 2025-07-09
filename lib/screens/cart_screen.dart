@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../core/cart_repository.dart';
+import '../core/models/restaut.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -10,6 +11,14 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   final cart = CartRepository();
+
+  void _increment(Restaut resto) {
+    setState(() => cart.add(resto));
+  }
+
+  void _decrement(Restaut resto) {
+    setState(() => cart.remove(resto));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +48,20 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   title: Text(item.resto.name),
                   subtitle: Text('${item.resto.price.toStringAsFixed(2)} €'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () => _decrement(item.resto),
+                        icon: const Icon(Icons.remove_circle_outline),
+                      ),
+                      Text('${item.quantity}', style: const TextStyle(fontSize: 16)),
+                      IconButton(
+                        onPressed: () => _increment(item.resto),
+                        icon: const Icon(Icons.add_circle_outline),
+                      ),
+                    ],
+                  ),
                 );
               },
             ),
