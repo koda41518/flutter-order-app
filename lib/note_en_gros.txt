@@ -1,0 +1,279 @@
+
+🏃‍♀️‍➡️
+💁:    bon je te fais un recap de tout c que j ai fais, 
+"👾 Voici un récapitulatif clair et structuré de tout ce qui a été fait jusqu’à présent dans ton projet Flutter “FoodMarket”, depuis l’installation jusqu’au splash screen :
+🧙‍♂️1er jour 
+⸻
+
+🧰 Installation et configuration
+
+✔️ Environnement de développement
+	•	Installation de Flutter + Dart sur macOS
+	•	Installation de Android Studio (avec émulateur Android fonctionnel)
+	•	Installation de Xcode (pour support iOS)
+	•	Installation de CocoaPods
+	•	Résolution de problèmes liés à Ruby / Pod / PATH
+	•	Vérification avec flutter doctor
+
+✔️ Flutter desktop et web
+	•	Activation du support macOS : flutter config --enable-macos-desktop
+	•	Projet Flutter détecte maintenant : Android, macOS, et Chrome
+
+⸻
+
+📁 Structure du projet
+	•	Création du projet food_app
+	•	Ajout de fichiers dans lib/ :
+	•	main.dart (point d’entrée principal)
+	•	widgets_lab.dart (pour tester les widgets Flutter)
+	•	brouillon.dart (espace libre d’expérimentation)
+
+⸻
+
+🧪 Tests & compréhension Flutter
+
+✔️ Widgets fondamentaux testés :
+	•	StatelessWidget, StatefulWidget
+	•	Row, Column, Container, Text, Icon
+	•	GestureDetector, Expanded, Flexible, SizedBox, etc.
+
+✔️ Concepts compris :
+	•	Widgets = blocs de construction UI (comme en React Native)
+	•	Hot reload vs Hot restart
+	•	Structure du main.dart (via MaterialApp, Scaffold, build())
+
+⸻
+
+🧑‍💻 Utilisation de GitHub 💥 mais bon jai abondonner c est chiant (kayn hein mais il est pas a jour)
+	•	Création du repo : flutter-order-app
+	•	Push initial depuis terminal
+	•	Création d’une branche dédiée test-widgets
+	•	Navigation entre branches (git checkout test-widgets, git checkout main)
+
+⸻
+
+🎨 Début de la maquette Figma
+
+✔️ Pages observées :
+	•	Splash (logo + nom FoodMarket)
+	•	Sign In
+	•	Sign Up
+	•	Sign Up + Photo
+
+✔️ Couleurs & branding :
+	•	Fond rouge #FF002B
+	•	Logo blanc (nom + icône de magasin)
+	•	Style moderne, épuré
+
+⸻
+
+🖼️ Ajout du logo FoodMarket
+	•	Création du dossier assets/images
+	•	Ajout de l’image logo.png
+	•	Configuration dans pubspec.yaml :
+
+flutter:
+  assets:
+    - assets/images/logo.png
+
+
+	•	Affichage du logo et texte sur un SplashScreen personnalisé via Image.asset() + Text()
+
+" 🧍‍♀️ voila ça c etait step 1 : instalations
+
+
+---------------------------------------------------------------------------------------------
+🫸definition🫷 🌝
+🧩 Un widget, c’est quoi en Flutter ? 🧙‍♂️
+
+Un widget est l’unité de base de l’interface utilisateur (UI) dans Flutter.
+
+Tout ce que tu vois à l’écran dans une app Flutter est un widget :
+	•	Un Text est un widget
+	•	Un Container est un widget
+	•	Un Row, Column, Button, Image, Scaffold, etc. → tous des widgets
+
+👾"C’est comme du LEGO UI : tu construis ton écran en combinant des widgets."
+
+
+
+---------------------------------------------------------------------------------------------
+RQ : ça a pas marche avec xcode , faut attendre un wifi stable 🫷-_-🫸
+
+
+
+
+---------------------------------------------------------------------------------------------
+🧙‍♂️ : RECAP STEP2 
+👾:⸻
+
+    🔁 RÉCAPITULATIF COMPLET DU FLOW UTILISATEUR
+
+    ⸻
+
+    🧱 STRUCTURE TECHNIQUE
+
+    Dossier lib/ contient :🌳
+
+    lib/
+    ├── main.dart                  🔁 Point d’entrée + routing
+    ├── screens/                  📱 Tous les écrans
+    │   ├── splash_screen.dart      🔸 Logo FoodMarket + redirection
+    │   ├── sign_in_screen.dart     🔸 Connexion
+    │   ├── sign_up_screen.dart     🔸 Inscription
+    │   └── home_screen.dart        🔸 Écran d’accueil final
+    ├── widgets/
+    │   └── custom_text_field.dart  🔹 Champ formulaire réutilisable
+    └── note-en-gros.txt          📝 Tes remarques perso
+
+    ⸻
+
+    ⚙️ COMPORTEMENT LOGIQUE
+
+    1. main.dart
+        •	Configure l’app
+        •	Déclare les routes (/home)
+        •	Définit le point de départ : SplashScreen
+
+    home: const SplashScreen(),
+    routes: {
+    '/home': (context) => const HomeScreen(),
+    }
+
+
+    ⸻
+
+    2. splash_screen.dart
+        •	Affiche logo.png + texte
+        •	Attends 2 secondes
+        •	Redirige automatiquement vers SignInScreen
+
+    Future.delayed(Duration(seconds: 2), () {
+    Navigator.pushReplacement(... SignInScreen());
+    });
+
+
+    ⸻
+
+    3. sign_in_screen.dart
+        •	UI pour se connecter
+        •	Lien “Create an account” ➡️ va vers SignUpScreen
+        •	Pas encore connecté à une vraie base (Firebase)
+
+    ⸻
+
+    4. sign_up_screen.dart
+        •	UI d’inscription (nom, email, mot de passe)
+        •	Bouton “Continue” redirige vers /home
+        •	Utilise CustomTextField
+
+    Navigator.pushReplacementNamed(context, '/home');
+
+
+    ⸻
+
+    5. home_screen.dart
+        •	Écran d’accueil
+        •	Montre texte “Bienvenue”
+        •	Pour l’instant statique → servira de point d’entrée post-login plus tard
+
+    ⸻
+
+    6. custom_text_field.dart
+        •	Widget pour ne pas dupliquer le code des champs
+        •	Reçoit un label, un hint, et un booléen obscure
+
+    ⸻
+
+    ✅ EN RÉSUMÉ
+
+    Tu as construit une app Flutter multi-écrans avec navigation complète :
+
+    Splash → SignIn → SignUp → Home
+
+    Et tout repose sur :
+    🧱 Widgets + Navigation + Routage propre
+
+    ⸻
+
+
+---------------------------------------------------------------------------------------------
+
+
+
+
+#🧙‍♂️ recap du deuxieme jour:
+
+⸻
+
+📦 Structure actuelle du projet 🌳
+
+
+🧙‍♂️🫸l instant l arbre : lib/
+                        ├── main.dart
+                        ├── core/
+                        │   └── models/
+                        │       └── restaut.dart           ✅ Modèle de restaurant
+                        ├── screens/
+                        │   ├── splash_screen.dart         ✅ Affichage initial (logo)
+                        │   ├── sign_in_screen.dart        ✅ Écran de connexion
+                        │   ├── sign_up_screen.dart        ✅ Écran d’inscription
+                        │   ├── home_screen.dart           ✅ Accueil avec bouton pour voir les restaurants
+                        │   ├── restaut_list_screen.dart   ✅ Liste des restaurants
+                        │   └── restaut_detail_screen.dart ✅ Détails d’un restaurant sélectionné
+                        ├── widgets/
+                        │   └── custom_text_field.dart     ✅ Champ de texte réutilisable
+                        └── note-en-gros.txt               ✅ (fichier de notes personnelles)
+
+
+
+⸻
+
+🧱 Fonctionnalités principales
+
+Fonction	                Description
+SplashScreen	            Affiche le logo + nom pendant 2s avant d’aller vers l’écran de connexion
+SignInScreen	            Formulaire de connexion (visuel uniquement)
+SignUpScreen	            Formulaire d’inscription (visuel uniquement)
+HomeScreen	                Affiche un bouton pour accéder à la liste des restaurants
+RestautListScreen	        Affiche une liste de restaurants avec image, nom, note et prix
+RestautDetailScreen	        Montre les détails complets du restaurant sélectionné
+CustomTextField	            Widget personnalisé pour styliser les champs de texte
+
+
+⸻
+
+🛠️ Techniques utilisées
+	•	✅ Navigation Flutter via Navigator.push et pushReplacement
+	•	✅ MaterialApp avec routes nommées
+	•	✅ Utilisation de ListView.builder pour une liste dynamique
+	•	✅ Passage de données entre écrans (objet Restaut)
+	•	✅ Modèle Restaut avec image, nom, description, rating et prix
+	•	✅ Structure scalable pour ajouter facilement du state management (Bloc, etc.)
+
+⸻
+***
+🧪 Prochaines pistes
+	•	Intégrer un vrai backend ou base de données
+	•	Ajouter un écran de commande (order_screen.dart)
+	•	Implémenter la gestion des états avec BLoC
+	•	Gérer l’authentification réelle (Firebase par exemple)
+	•	Ajouter des images locales et une meilleure gestion des assets
+***
+⸻ EN GROS LE backend
+
+
+---------------------------------------------------------------------------------------------
+🫸definition🫷 🌝
+    Le backend désigne tout ce qui se passe côté serveur, 
+    en arrière-plan d’une application. C’est l’ensemble des outils, bases de données, APIs, logiques métier qui font fonctionner ton application mais que l’utilisateur ne voit pas directement.
+    En gros:
+     "Le backend, c’est le cerveau de ton application. Il traite les données, applique la logique métier, et fournit les résultats à l’interface utilisateur (le frontend, ici Flutter)."
+
+    ‼️"la gestion de la base de donnéesfait entièrement partie du backend"⁉️
+
+Etape3 : la gestion de la base de données .
+	1.	Vérifie si l’email existe déjà.
+	2.	Hash le mot de passe.
+	3.	Stocke les infos dans la base de données.
+
