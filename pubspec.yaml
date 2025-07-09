@@ -57,3 +57,4 @@ flutter:
     - assets/images/logo.png
     - assets/images/success_order.png
     - assets/images/empty_order.png
+    - assets/images/loading_anim.gif
