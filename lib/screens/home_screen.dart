@@ -8,10 +8,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isPlaying = false;
+  String _animationPath = '';
 
-  void _playAnimation() async {
-    setState(() => isPlaying = true);
-    await Future.delayed(const Duration(seconds: 3)); // durée de l’animation
+  void _playAnimation(String assetPath) async {
+    setState(() {
+      isPlaying = true;
+      _animationPath = assetPath;
+    });
+    await Future.delayed(const Duration(seconds: 3));
     setState(() => isPlaying = false);
   }
 
@@ -25,23 +29,22 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          // Contenu principal
           Padding(
             padding: const EdgeInsets.all(24),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  "Choose your favorite meal!",
+                  "Choose your favorite action!",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 32),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     GestureDetector(
-                      onTap: _playAnimation, // Appel de l’animation
+                      onTap: () => _playAnimation('assets/images/Hourglass.gif'),
                       child: Column(
                         children: const [
                           Icon(Icons.hourglass_empty, size: 48, color: Colors.blue),
@@ -50,9 +53,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 48),
                     GestureDetector(
-                      onTap: _playAnimation,
+                      onTap: () => _playAnimation('assets/images/Loading-bar.gif'),
                       child: Column(
                         children: const [
                           Icon(Icons.cloud_download, size: 48, color: Colors.green),
@@ -61,23 +63,31 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
+                    GestureDetector(
+                      onTap: () => _playAnimation('assets/images/success_order.png'),
+                      child: Column(
+                        children: const [
+                          Icon(Icons.check_circle, size: 48, color: Colors.orange),
+                          SizedBox(height: 4),
+                          Text('Success'),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ],
             ),
           ),
-
-          // Animation de loader
           if (isPlaying)
             AnimatedOpacity(
-              opacity: isPlaying ? 1 : 0,
+              opacity: 1,
               duration: const Duration(milliseconds: 300),
               child: Container(
                 color: Colors.black54,
                 width: double.infinity,
                 height: double.infinity,
-                child: const Center(
-                  child: Image(asset: 'assets/images/Hourglass.gif', width: 100),
+                child: Center(
+                  child: Image.asset(_animationPath, width: 100),
                 ),
               ),
             ),
