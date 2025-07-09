@@ -4,7 +4,7 @@ import 'models/restaut.dart';
 class CartRepository {
   static final CartRepository _instance = CartRepository._internal();
   factory CartRepository() => _instance;
-
+  CartRepository._internal();
   final List<CartItem> _items = [];
 
   List<CartItem> get items => List.unmodifiable(_items);
