@@ -512,3 +512,8 @@ Etape3 : la gestion de la base de données .
     ou dans l’interface Git de VS Code, tu peux staguer et commiter le fichier via l’onglet “Source Control”.
 
 ---------------------------------------------------------------------------------------------
+
+3 eme jour,
+    j avais reussi a ouvrir le simulateur apple , genre un iphone , (wlh j ai meme une video) mais j ai oublier de noté comment j avais fait ducoup j ai oublier et 
+    j ai perdu le simulateur ios, des que je trouve comment je note directement
+    

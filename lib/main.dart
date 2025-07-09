@@ -19,7 +19,7 @@ class FoodMarketApp extends StatelessWidget {
     return MaterialApp(
       title: 'FoodMarket',
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(), // L'écran de démarrage
+      home: const MainScreen(), // L'écran de démarrage
       routes: {
         '/sign-in': (context) => const SignInScreen(),
         '/sign-up': (context) => const SignUpScreen(),
