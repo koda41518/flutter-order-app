@@ -1,25 +1,34 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../core/cart_repository.dart';
-import 'restaut_list_screen.dart';
-import 'cart_screen.dart';
-import 'profile_screen.dart';
-
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
-
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
-  bool _cartViewed = false;
+  bool _cartViewed = true; // Commence comme "vu"
 
   final List<Widget> _screens = [
     RestautListScreen(),
     const CartScreen(),
     const ProfileScreen(),
   ];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final cart = Provider.of<CartRepository>(context);
+    cart.removeListener(_cartListener); // évite les doublons
+    cart.addListener(_cartListener);
+  }
+
+  void _cartListener() {
+    if (_currentIndex != 1) {
+      setState(() {
+        _cartViewed = false;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    Provider.of<CartRepository>(context, listen: false).removeListener(_cartListener);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +44,7 @@ class _MainScreenState extends State<MainScreen> {
         onTap: (index) {
           setState(() {
             _currentIndex = index;
-            if (index == 1) _cartViewed = true; // ✅ vue du panier
+            if (index == 1) _cartViewed = true;
           });
         },
         items: [
@@ -57,8 +66,7 @@ class _MainScreenState extends State<MainScreen> {
                         color: Colors.red,
                         shape: BoxShape.circle,
                       ),
-                      constraints:
-                          const BoxConstraints(minWidth: 12, minHeight: 12),
+                      constraints: const BoxConstraints(minWidth: 12, minHeight: 12),
                       child: const Text('', style: TextStyle(fontSize: 8)),
                     ),
                   ),
