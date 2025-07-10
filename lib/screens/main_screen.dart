@@ -11,12 +11,12 @@ class MainScreen extends StatefulWidget {
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
-
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
+  bool _cartViewed = false;
 
   final List<Widget> _screens = [
-    RestautListScreen(), // supprimé le const ici
+    RestautListScreen(),
     const CartScreen(),
     const ProfileScreen(),
   ];
@@ -24,7 +24,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final cart = context.watch<CartRepository>();
-    final hasNew = cart.count > 0 && _currentIndex != 1;
+    final hasNew = cart.count > 0 && !_cartViewed;
 
     return Scaffold(
       body: _screens[_currentIndex],
@@ -33,7 +33,10 @@ class _MainScreenState extends State<MainScreen> {
         selectedItemColor: const Color(0xFFFF002B),
         unselectedItemColor: Colors.grey,
         onTap: (index) {
-          setState(() => _currentIndex = index);
+          setState(() {
+            _currentIndex = index;
+            if (index == 1) _cartViewed = true; // ✅ vue du panier
+          });
         },
         items: [
           const BottomNavigationBarItem(
