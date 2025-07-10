@@ -5,6 +5,7 @@ import 'screens/splash_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/sign_in_screen.dart';
 import 'screens/sign_up_screen.dart';
+import 'screens/main_screen.dart';
 void main() {
   runApp(
     ChangeNotifierProvider(
