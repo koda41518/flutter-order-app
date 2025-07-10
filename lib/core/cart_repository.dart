@@ -2,7 +2,6 @@ import 'models/cart_item.dart';
 import 'models/restaut.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
-import 'core/cart_repository.dart';
 
 class CartRepository extends ChangeNotifier {
   static final CartRepository _instance = CartRepository._internal();
@@ -54,4 +53,8 @@ class CartRepository extends ChangeNotifier {
 
   // Retourne le nombre total d'éléments dans le panier
   int get count => _items.fold(0, (total, item) => total + item.quantity);
+
+  // 💸 Nouveau getter ajouté ici :
+  double get totalPrice => _items.fold(
+    0.0, (total, item) => total + item.quantity * item.resto.price);
 }

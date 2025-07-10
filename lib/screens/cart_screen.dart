@@ -10,7 +10,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  final cart = CartRepository();
+  cart = context.watch<CartRepository>();
 
   void _increment(Restaut resto) {
     setState(() => cart.add(resto));
@@ -19,9 +19,9 @@ class _CartScreenState extends State<CartScreen> {
   void _decrement(Restaut resto) {
     setState(() => cart.remove(resto));
   }
-
   @override
   Widget build(BuildContext context) {
+    final cart = context.watch<CartRepository>();
     final items = cart.items;
 
     return Scaffold(
