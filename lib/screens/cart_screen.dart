@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../core/cart_repository.dart';
 import '../core/models/restaut.dart';
-import '../models/order.dart';
+import '../core/models/order.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});

@@ -1,4 +1,3 @@
-
 enum OrderStatus { inProgress, completed, cancelled }
 
 class Order {
