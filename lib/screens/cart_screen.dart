@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../core/cart_repository.dart';
 import '../core/models/restaut.dart';
 
-class CartScreen extends StatefulWidget {
+class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 
-  @override
-  State<CartScreen> createState() => _CartScreenState();
-}
-
-class _CartScreenState extends State<CartScreen> {
-  cart = context.watch<CartRepository>();
-
-  void _increment(Restaut resto) {
-    setState(() => cart.add(resto));
+  void _increment(BuildContext context, Restaut resto) {
+    context.read<CartRepository>().add(resto);
   }
 
-  void _decrement(Restaut resto) {
-    setState(() => cart.remove(resto));
+  void _decrement(BuildContext context, Restaut resto) {
+    context.read<CartRepository>().remove(resto);
   }
+
   @override
   Widget build(BuildContext context) {
     final cart = context.watch<CartRepository>();
@@ -65,13 +60,13 @@ class _CartScreenState extends State<CartScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        onPressed: () => _decrement(item.resto),
+                        onPressed: () => _decrement(context, item.resto),
                         icon: const Icon(Icons.remove_circle_outline),
                       ),
                       Text('${item.quantity}',
                           style: const TextStyle(fontSize: 16)),
                       IconButton(
-                        onPressed: () => _increment(item.resto),
+                        onPressed: () => _increment(context, item.resto),
                         icon: const Icon(Icons.add_circle_outline),
                       ),
                     ],
