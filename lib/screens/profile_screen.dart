@@ -39,6 +39,14 @@ class _AccountTab extends StatefulWidget {
 class _AccountTabState extends State<_AccountTab> {
   String fullName = 'John Doe';
   String email = 'johndoe@example.com';
+  int selectedIconIndex = 0;
+
+  final List<IconData> icons = [
+    Icons.person,
+    Icons.pets,
+    Icons.star,
+    Icons.cake,
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +56,15 @@ class _AccountTabState extends State<_AccountTab> {
         Center(
           child: CircleAvatar(
             radius: 50,
-            backgroundImage:
-                NetworkImage('https://i.pravatar.cc/150?img=3'),
+            child: Icon(icons[selectedIconIndex], size: 48),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Center(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFF002B)),
+            onPressed: _chooseIcon,
+            child: const Text('Modifier le profil'),
           ),
         ),
         const SizedBox(height: 16),
@@ -59,11 +74,9 @@ class _AccountTabState extends State<_AccountTab> {
           subtitle: const Text('Full Name'),
           trailing: IconButton(
             icon: const Icon(Icons.edit),
-            onPressed: () {
-              _editDialog(context, 'Full Name', fullName, (val) {
-                setState(() => fullName = val);
-              });
-            },
+            onPressed: () => _editDialog(context, 'Full Name', fullName, (val) {
+              setState(() => fullName = val);
+            }),
           ),
         ),
         ListTile(
@@ -72,19 +85,44 @@ class _AccountTabState extends State<_AccountTab> {
           subtitle: const Text('Email'),
           trailing: IconButton(
             icon: const Icon(Icons.edit),
-            onPressed: () {
-              _editDialog(context, 'Email', email, (val) {
-                setState(() => email = val);
-              });
-            },
+            onPressed: () => _editDialog(context, 'Email', email, (val) {
+              setState(() => email = val);
+            }),
           ),
         ),
       ],
     );
   }
 
+  void _chooseIcon() {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Choisis une icône'),
+        content: Wrap(
+          spacing: 12,
+          children: List.generate(icons.length, (i) {
+            return GestureDetector(
+              onTap: () {
+                setState(() => selectedIconIndex = i);
+                Navigator.pop(context);
+              },
+              child: CircleAvatar(
+                child: Icon(icons[i]),
+              ),
+            );
+          }),
+        ),
+      ),
+    );
+  }
+
   Future<void> _editDialog(
-      BuildContext context, String field, String initial, Function(String) onSave) {
+    BuildContext context,
+    String field,
+    String initial,
+    Function(String) onSave,
+  ) {
     final controller = TextEditingController(text: initial);
 
     return showDialog(
@@ -94,16 +132,15 @@ class _AccountTabState extends State<_AccountTab> {
           title: Text('Edit $field'),
           content: TextField(controller: controller),
           actions: [
-            TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel')),
+            TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
             ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFF002B)),
-                onPressed: () {
-                  onSave(controller.text.trim());
-                  Navigator.pop(context);
-                },
-                child: const Text('Save')),
+              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFF002B)),
+              onPressed: () {
+                onSave(controller.text.trim());
+                Navigator.pop(context);
+              },
+              child: const Text('Save'),
+            ),
           ],
         );
       },
@@ -139,24 +176,23 @@ class _AppInfoTab extends StatelessWidget {
           onTap: () {
             showDialog(
               context: context,
-              builder: (_) =>
-                  AlertDialog(
-                    title: const Text('Logout'),
-                    content: const Text('Do you really want to logout?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('Cancel'),
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFF002B)),
-                        onPressed: () {
-                          Navigator.popUntil(context, (route) => route.isFirst);
-                        },
-                        child: const Text('Logout'),
-                      ),
-                    ],
+              builder: (_) => AlertDialog(
+                title: const Text('Logout'),
+                content: const Text('Do you really want to logout?'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Cancel'),
                   ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFF002B)),
+                    onPressed: () {
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                    },
+                    child: const Text('Logout'),
+                  ),
+                ],
+              ),
             );
           },
         ),
