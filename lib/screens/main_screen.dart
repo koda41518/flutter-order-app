@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import '../core/cart_repository.dart';
 import 'restaut_list_screen.dart';
 import 'cart_screen.dart';
-import 'profile_screen.dart';
 import 'order_screen.dart';
+import 'profile_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -15,40 +15,18 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
-  bool _cartViewed = true;
 
   final List<Widget> _screens = [
-    RestautListScreen(),
+    const RestautListScreen(),
     const CartScreen(),
+    const OrderScreen(), // 👈 Ajouté ici
     const ProfileScreen(),
   ];
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final cart = Provider.of<CartRepository>(context);
-    cart.removeListener(_cartListener);
-    cart.addListener(_cartListener);
-  }
-
-  void _cartListener() {
-    if (_currentIndex != 1) {
-      setState(() {
-        _cartViewed = false;
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    Provider.of<CartRepository>(context, listen: false).removeListener(_cartListener);
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final cart = context.watch<CartRepository>();
-    final hasNew = cart.count > 0 && !_cartViewed;
+    final hasNew = cart.count > 0 && _currentIndex != 1;
 
     return Scaffold(
       body: _screens[_currentIndex],
@@ -57,10 +35,7 @@ class _MainScreenState extends State<MainScreen> {
         selectedItemColor: const Color(0xFFFF002B),
         unselectedItemColor: Colors.grey,
         onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-            if (index == 1) _cartViewed = true;
-          });
+          setState(() => _currentIndex = index);
         },
         items: [
           const BottomNavigationBarItem(
@@ -88,6 +63,10 @@ class _MainScreenState extends State<MainScreen> {
               ],
             ),
             label: 'Cart',
+          ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.receipt_long), // 📄 Icône commande
+            label: 'Orders',
           ),
           const BottomNavigationBarItem(
             icon: Icon(Icons.person),
