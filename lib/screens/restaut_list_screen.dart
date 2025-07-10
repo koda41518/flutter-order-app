@@ -13,6 +13,7 @@ class RestautListScreen extends StatelessWidget {
       rating: 4.5,
       price: 12.90,
     ),
+    
     Restaut(
       name: "Burger Tama",
       description: "Big juicy burgers",

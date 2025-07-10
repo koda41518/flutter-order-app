@@ -83,9 +83,8 @@ class CartScreen extends StatelessWidget {
                 onPressed: () {
                   final newOrder = Order(
                     name: items.first.resto.name,
-                    image: items.first.resto.imageUrl,
-                    itemCount:
-                        items.fold(0, (total, item) => total + item.quantity),
+                    image: _mapToAssetImage(items.first.resto.name),
+                    itemCount: items.fold(0, (total, item) => total + item.quantity),
                     price: items.fold(0.0, (total, item) =>
                         total + item.resto.price * item.quantity),
                     date: DateTime.now(),
@@ -110,5 +109,17 @@ class CartScreen extends StatelessWidget {
             )
           : null,
     );
+  }
+
+  // Associe le nom d’un plat à son image asset correspondante
+  String _mapToAssetImage(String name) {
+    final normalized = name.toLowerCase();
+    if (normalized.contains('burger')) return 'assets/images/Burger Tama.png';
+    if (normalized.contains('cherry')) return 'assets/images/Cherry Healthy.png';
+    if (normalized.contains('sushi')) return 'assets/images/sushi.png';
+    if (normalized.contains('pizza')) return 'assets/images/pizza.png';
+    if (normalized.contains('tacos')) return 'assets/images/tacos.png';
+    if (normalized.contains('noodle')) return 'assets/images/Healthy Noodle.png';
+    return 'assets/images/logo.png'; // fallback
   }
 }
