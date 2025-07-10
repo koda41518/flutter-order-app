@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../core/cart_repository.dart';
 import '../core/models/restaut.dart';
+import '../models/order.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -80,8 +81,24 @@ class CartScreen extends StatelessWidget {
               color: Colors.white,
               child: ElevatedButton(
                 onPressed: () {
+                  final newOrder = Order(
+                    name: items.first.resto.name,
+                    image: items.first.resto.imageUrl,
+                    itemCount:
+                        items.fold(0, (total, item) => total + item.quantity),
+                    price: items.fold(0.0, (total, item) =>
+                        total + item.resto.price * item.quantity),
+                    date: DateTime.now(),
+                    status: OrderStatus.inProgress,
+                  );
+
+                  debugPrint(
+                      'Commande créée: ${newOrder.name} - ${newOrder.itemCount} items - ${newOrder.price} €');
+
+                  context.read<CartRepository>().clear();
+
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Checkout not implemented')),
+                    const SnackBar(content: Text('Commande créée !')),
                   );
                 },
                 style: ElevatedButton.styleFrom(

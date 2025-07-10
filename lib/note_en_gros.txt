@@ -541,3 +541,84 @@ Etape3 : la gestion de la base de données .
                         │   └── custom_text_field.dart
                         ├── main.dart
                         └── note_en_gros.txt
+
+
+
+---------------------------------------------------------------------------------------------
+
+
+4 eme jour 🙂‍↕️
+    ⸻
+
+    ✅ 1. Gestion du Profil avec Avatar
+        •	Implémentation de 3 choix pour l’image de profil :
+        •	📸 Prendre une photo (caméra)
+        •	🖼️ Choisir depuis la galerie
+        •	🧑‍🎨 Choisir une icône par défaut
+        •	Stockage temporaire de l’image ou de l’icône dans l’état local.
+
+    ⸻
+
+    ✅ 2. Permissions iOS
+
+    Ajout des permissions nécessaires dans ios/Runner/Info.plist :
+
+    <key>NSCameraUsageDescription</key>
+    <string>Besoin d’accéder à la caméra pour prendre une photo de profil</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Besoin d’accéder à la galerie pour choisir une photo</string>
+
+
+    ⸻
+
+    ✅ 3. CartRepository (panier global)
+        •	Création d’un CartRepository avec ChangeNotifier.
+        •	Ajout/suppression de plats dans le panier.
+        •	Suivi du nombre total d’articles.
+
+    ⸻
+
+    ✅ 4. Provider pour le panier
+        •	Ajout du package provider: ^6.0.0 dans pubspec.yaml.
+        •	Wrappé ton FoodMarketApp avec ChangeNotifierProvider<CartRepository> dans main.dart.
+
+    ⸻
+
+    ✅ 5. Notification sur l’icône du panier
+        •	Mise en place d’un badge rouge (🔴) quand des articles sont dans le panier et que l’utilisateur n’a pas encore consulté l’onglet Cart.
+        •	Disparition automatique du badge dès que l’utilisateur ouvre l’onglet Cart.
+
+    ⸻
+
+    ✅ 6. Mise à jour dynamique du badge
+        •	Ajout d’un listener sur CartRepository dans MainScreen pour détecter toute modification du panier.
+        •	Si une modification est détectée et que l’utilisateur n’est pas dans Cart, alors hasNew = true.
+
+    ⸻
+
+    ✅ 7. Correction de bugs
+        •	Correction de :
+        •	Erreurs de syntaxe dans pubspec.yaml (clé dupliquée, indentation).
+        •	Mauvais import de CartRepository.
+        •	Mauvais usage du mot-clé const.
+        •	Suppression d’un cclass → class.
+        •	Nettoyage de build.gradle.kts pour le NDK version.
+
+    ⸻
+
+    ✅ 8. Navigation et Structure
+        •	Écran principal MainScreen avec BottomNavigationBar :
+        •	🏬 Order
+        •	🛒 Cart
+        •	👤 Profile
+
+    ⸻
+
+    Si tu veux, je peux maintenant t’aider à :
+        •	Persister les données du panier localement
+        •	Envoyer les commandes à un backend
+        •	Ajouter des animations ou un onboarding
+        •	Ajouter Firebase / authentification
+        •	Améliorer la structure du projet avec un Service Layer
+
+    
