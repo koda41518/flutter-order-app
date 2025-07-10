@@ -16,7 +16,7 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
-    const RestautListScreen(),
+    RestautListScreen(), // supprimé le const ici
     const CartScreen(),
     const ProfileScreen(),
   ];
@@ -54,7 +54,8 @@ class _MainScreenState extends State<MainScreen> {
                         color: Colors.red,
                         shape: BoxShape.circle,
                       ),
-                      constraints: const BoxConstraints(minWidth: 12, minHeight: 12),
+                      constraints:
+                          const BoxConstraints(minWidth: 12, minHeight: 12),
                       child: const Text('', style: TextStyle(fontSize: 8)),
                     ),
                   ),
