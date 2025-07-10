@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -39,31 +41,41 @@ class _AccountTab extends StatefulWidget {
 class _AccountTabState extends State<_AccountTab> {
   String fullName = 'John Doe';
   String email = 'johndoe@example.com';
-  int selectedIconIndex = 0;
+  int? selectedIconIndex = 0;
+  File? imageFile;
 
   final List<IconData> icons = [
     Icons.person,
     Icons.pets,
     Icons.star,
     Icons.cake,
+    Icons.favorite,
+    Icons.audiotrack,
+    Icons.beach_access,
   ];
+
+  final ImagePicker picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
+    Widget avatar;
+    if (imageFile != null) {
+      avatar = CircleAvatar(radius: 50, backgroundImage: FileImage(imageFile!));
+    } else if (selectedIconIndex != null) {
+      avatar = CircleAvatar(radius: 50, child: Icon(icons[selectedIconIndex!], size: 48));
+    } else {
+      avatar = const CircleAvatar(radius: 50, child: Icon(Icons.person, size: 48));
+    }
+
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        Center(
-          child: CircleAvatar(
-            radius: 50,
-            child: Icon(icons[selectedIconIndex], size: 48),
-          ),
-        ),
+        Center(child: avatar),
         const SizedBox(height: 8),
         Center(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFF002B)),
-            onPressed: _chooseIcon,
+            onPressed: _chooseProfilePicture,
             child: const Text('Modifier le profil'),
           ),
         ),
@@ -94,6 +106,54 @@ class _AccountTabState extends State<_AccountTab> {
     );
   }
 
+  void _chooseProfilePicture() {
+    showModalBottomSheet(
+      context: context,
+      builder: (_) => SafeArea(
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: const Text('Prendre une photo'),
+              onTap: () async {
+                final picked = await picker.pickImage(source: ImageSource.camera);
+                if (picked != null) {
+                  setState(() {
+                    imageFile = File(picked.path);
+                    selectedIconIndex = null;
+                  });
+                }
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: const Text('Choisir depuis la galerie'),
+              onTap: () async {
+                final picked = await picker.pickImage(source: ImageSource.gallery);
+                if (picked != null) {
+                  setState(() {
+                    imageFile = File(picked.path);
+                    selectedIconIndex = null;
+                  });
+                }
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.emoji_emotions),
+              title: const Text('Choisir une icône'),
+              onTap: () {
+                Navigator.pop(context);
+                _chooseIcon();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   void _chooseIcon() {
     showDialog(
       context: context,
@@ -104,12 +164,13 @@ class _AccountTabState extends State<_AccountTab> {
           children: List.generate(icons.length, (i) {
             return GestureDetector(
               onTap: () {
-                setState(() => selectedIconIndex = i);
+                setState(() {
+                  selectedIconIndex = i;
+                  imageFile = null;
+                });
                 Navigator.pop(context);
               },
-              child: CircleAvatar(
-                child: Icon(icons[i]),
-              ),
+              child: CircleAvatar(child: Icon(icons[i])),
             );
           }),
         ),
@@ -127,23 +188,21 @@ class _AccountTabState extends State<_AccountTab> {
 
     return showDialog(
       context: context,
-      builder: (_) {
-        return AlertDialog(
-          title: Text('Edit $field'),
-          content: TextField(controller: controller),
-          actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFF002B)),
-              onPressed: () {
-                onSave(controller.text.trim());
-                Navigator.pop(context);
-              },
-              child: const Text('Save'),
-            ),
-          ],
-        );
-      },
+      builder: (_) => AlertDialog(
+        title: Text('Edit $field'),
+        content: TextField(controller: controller),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFF002B)),
+            onPressed: () {
+              onSave(controller.text.trim());
+              Navigator.pop(context);
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
     );
   }
 }
