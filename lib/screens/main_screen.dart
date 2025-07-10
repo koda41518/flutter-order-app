@@ -1,6 +1,20 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../core/cart_repository.dart';
+import 'restaut_list_screen.dart';
+import 'cart_screen.dart';
+import 'profile_screen.dart';
+
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
-  bool _cartViewed = true; // Commence comme "vu"
+  bool _cartViewed = true;
 
   final List<Widget> _screens = [
     RestautListScreen(),
@@ -12,7 +26,7 @@ class _MainScreenState extends State<MainScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final cart = Provider.of<CartRepository>(context);
-    cart.removeListener(_cartListener); // évite les doublons
+    cart.removeListener(_cartListener);
     cart.addListener(_cartListener);
   }
 
