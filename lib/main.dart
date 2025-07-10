@@ -1,7 +1,6 @@
-
-
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'core/cart_repository.dart';
 import 'screens/splash_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/sign_in_screen.dart';
@@ -16,6 +15,7 @@ void main() {
     ),
   );
 }
+
 class FoodMarketApp extends StatelessWidget {
   const FoodMarketApp({super.key});
 
@@ -24,7 +24,7 @@ class FoodMarketApp extends StatelessWidget {
     return MaterialApp(
       title: 'FoodMarket',
       debugShowCheckedModeBanner: false,
-      home: const MainScreen(), // L'écran de démarrage
+      home: const MainScreen(),
       routes: {
         '/sign-in': (context) => const SignInScreen(),
         '/sign-up': (context) => const SignUpScreen(),

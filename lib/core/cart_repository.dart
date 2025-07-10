@@ -1,6 +1,8 @@
 import 'models/cart_item.dart';
 import 'models/restaut.dart';
 import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
+import 'core/cart_repository.dart';
 
 class CartRepository extends ChangeNotifier {
   static final CartRepository _instance = CartRepository._internal();
