@@ -9,9 +9,13 @@ import 'screens/sign_up_screen.dart';
 import 'screens/main_screen.dart';
 
 void main() {
-  runApp(const FoodMarketApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => CartRepository(),
+      child: const FoodMarketApp(),
+    ),
+  );
 }
-
 class FoodMarketApp extends StatelessWidget {
   const FoodMarketApp({super.key});
 

@@ -1,7 +1,8 @@
 import 'models/cart_item.dart';
 import 'models/restaut.dart';
+import 'package:flutter/foundation.dart';
 
-class CartRepository {
+class CartRepository extends ChangeNotifier {
   static final CartRepository _instance = CartRepository._internal();
   factory CartRepository() => _instance;
   CartRepository._internal();
@@ -23,6 +24,7 @@ class CartRepository {
     } else {
       _items.add(CartItem(resto: resto));
     }
+    notifyListeners();
   }
 
   // Supprime un plat du panier
@@ -39,11 +41,13 @@ class CartRepository {
         _items.removeAt(index);
       }
     }
+    notifyListeners();
   }
 
   // Vide complètement le panier
   void clear() {
     _items.clear();
+    notifyListeners();
   }
 
   // Retourne le nombre total d'éléments dans le panier
