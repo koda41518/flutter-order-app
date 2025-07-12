@@ -56,18 +56,21 @@ class CartScreen extends StatelessWidget {
                         const Icon(Icons.broken_image),
                   ),
                   title: Text(item.resto.name),
-                  subtitle: Text('${item.resto.price.toStringAsFixed(2)} €'),
+                  subtitle:
+                      Text('${item.resto.price.toStringAsFixed(2)} €'),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        onPressed: () => _decrement(context, item.resto),
+                        onPressed: () =>
+                            _decrement(context, item.resto),
                         icon: const Icon(Icons.remove_circle_outline),
                       ),
                       Text('${item.quantity}',
                           style: const TextStyle(fontSize: 16)),
                       IconButton(
-                        onPressed: () => _increment(context, item.resto),
+                        onPressed: () =>
+                            _increment(context, item.resto),
                         icon: const Icon(Icons.add_circle_outline),
                       ),
                     ],
@@ -81,19 +84,25 @@ class CartScreen extends StatelessWidget {
               color: Colors.white,
               child: ElevatedButton(
                 onPressed: () {
+                  // Création de l'objet Order
                   final newOrder = Order(
                     name: items.first.resto.name,
-                    image: _mapToAssetImage(items.first.resto.name),
-                    itemCount: items.fold(0, (total, item) => total + item.quantity),
-                    price: items.fold(0.0, (total, item) =>
-                        total + item.resto.price * item.quantity),
+                    image: _mapToAssetImage(
+                        items.first.resto.name),
+                    itemCount: items.fold(
+                        0, (total, item) => total + item.quantity),
+                    price: items.fold(
+                        0.0,
+                        (total, item) =>
+                            total + item.resto.price * item.quantity),
                     date: DateTime.now(),
                     status: OrderStatus.inProgress,
                   );
 
                   debugPrint(
-                      'Commande créée: ${newOrder.name} - ${newOrder.itemCount} items - ${newOrder.price} €');
+                      'Commande créée: ${newOrder.name} • ${newOrder.itemCount} items • ${newOrder.price} €');
 
+                  // Vider le panier
                   context.read<CartRepository>().clear();
 
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -102,24 +111,38 @@ class CartScreen extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFF002B),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 16),
                 ),
-                child: const Text('Checkout', style: TextStyle(fontSize: 18)),
+                child: const Text('Checkout',
+                    style: TextStyle(fontSize: 18)),
               ),
             )
           : null,
     );
   }
 
-  // Associe le nom d’un plat à son image asset correspondante
+  // Associe un nom de plat avec son image local
   String _mapToAssetImage(String name) {
     final normalized = name.toLowerCase();
-    if (normalized.contains('burger')) return 'assets/images/Burger Tama.png';
-    if (normalized.contains('cherry')) return 'assets/images/Cherry Healthy.png';
-    if (normalized.contains('sushi')) return 'assets/images/sushi.png';
-    if (normalized.contains('pizza')) return 'assets/images/pizza.png';
-    if (normalized.contains('tacos')) return 'assets/images/tacos.png';
-    if (normalized.contains('noodle')) return 'assets/images/Healthy Noodle.png';
-    return 'assets/images/logo.png'; // fallback
+    if (normalized.contains('burger')) {
+      return 'assets/images/Burger Tama.png';
+    }
+    if (normalized.contains('cherry')) {
+      return 'assets/images/Cherry Healthy.png';
+    }
+    if (normalized.contains('sushi')) {
+      return 'assets/images/sushi.png';
+    }
+    if (normalized.contains('pizza')) {
+      return 'assets/images/pizza.png';
+    }
+    if (normalized.contains('tacos')) {
+      return 'assets/images/tacos.png';
+    }
+    if (normalized.contains('noodle')) {
+      return 'assets/images/Healthy Noodle.png';
+    }
+    return 'assets/images/logo.png'; // image par défaut
   }
 }
