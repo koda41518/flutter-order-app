@@ -92,20 +92,15 @@ class _AccountTabState extends State<_AccountTab> {
             }),
           ),
         ),
-        ElevatedButton.icon(
-          onPressed: () {
+        ListTile(
+          leading: const Icon(Icons.credit_card),
+          title: const Text('Ajouter une carte'),
+          onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (_) => const AddCardScreen()),
             );
           },
-          icon: const Icon(Icons.credit_card),
-          label: const Text('Ajouter une carte'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFFF002B),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-          ),
         ),
         ListTile(
           leading: const Icon(Icons.email),
@@ -233,7 +228,7 @@ class _AppInfoTab extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.support_agent),
           title: const Text('Support'),
-          onTap: () {/* TODO: navigate */},
+          onTap: () {},
         ),
         ListTile(
           leading: const Icon(Icons.privacy_tip),
