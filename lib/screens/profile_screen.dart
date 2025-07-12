@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'add_card_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -89,6 +90,21 @@ class _AccountTabState extends State<_AccountTab> {
             onPressed: () => _editDialog(context, 'Full Name', fullName, (val) {
               setState(() => fullName = val);
             }),
+          ),
+        ),
+        ElevatedButton.icon(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const AddCardScreen()),
+            );
+          },
+          icon: const Icon(Icons.credit_card),
+          label: const Text('Ajouter une carte'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFFFF002B),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           ),
         ),
         ListTile(
