@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'core/cart_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'core/bloc/cart/cart_bloc.dart';
 import 'screens/splash_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/sign_in_screen.dart';
 import 'screens/sign_up_screen.dart';
 import 'screens/main_screen.dart';
+
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => CartRepository(),
+    BlocProvider(
+      create: (_) => CartBloc(),
       child: const FoodMarketApp(),
     ),
   );
