@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../core/cart_repository.dart';
 import '../core/models/restaut.dart';
 import '../core/models/order.dart';
+import '../core/models/cart_item.dart';
 import 'tracking_screen.dart';
 
 class CartScreen extends StatelessWidget {
@@ -31,15 +32,9 @@ class CartScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    'assets/images/empty_order.png',
-                    width: 200,
-                  ),
+                  Image.asset('assets/images/empty_order.png', width: 200),
                   const SizedBox(height: 24),
-                  const Text(
-                    'Your cart is empty!',
-                    style: TextStyle(fontSize: 18),
-                  ),
+                  const Text('Your cart is empty!', style: TextStyle(fontSize: 18)),
                 ],
               ),
             )
@@ -53,25 +48,20 @@ class CartScreen extends StatelessWidget {
                     width: 50,
                     height: 50,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) =>
-                        const Icon(Icons.broken_image),
+                    errorBuilder: (_, __, ___) => const Icon(Icons.broken_image),
                   ),
                   title: Text(item.resto.name),
-                  subtitle:
-                      Text('${item.resto.price.toStringAsFixed(2)} €'),
+                  subtitle: Text('${item.resto.price.toStringAsFixed(2)} €'),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        onPressed: () =>
-                            _decrement(context, item.resto),
+                        onPressed: () => _decrement(context, item.resto),
                         icon: const Icon(Icons.remove_circle_outline),
                       ),
-                      Text('${item.quantity}',
-                          style: const TextStyle(fontSize: 16)),
+                      Text('${item.quantity}', style: const TextStyle(fontSize: 16)),
                       IconButton(
-                        onPressed: () =>
-                            _increment(context, item.resto),
+                        onPressed: () => _increment(context, item.resto),
                         icon: const Icon(Icons.add_circle_outline),
                       ),
                     ],
@@ -89,10 +79,7 @@ class CartScreen extends StatelessWidget {
                   backgroundColor: const Color(0xFFFF002B),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                child: const Text(
-                  'Checkout',
-                  style: TextStyle(fontSize: 18),
-                ),
+                child: const Text('Checkout', style: TextStyle(fontSize: 18)),
               ),
             )
           : null,
@@ -100,82 +87,82 @@ class CartScreen extends StatelessWidget {
   }
 
   void _openCheckoutModal(BuildContext context, List<CartItem> items) {
-    String? paymentMethod;
-    String address = '';
-
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // permet d'agrandir avec le clavier
-      builder: (ctx) => Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(ctx).viewInsets.bottom,
-          top: 16,
-          left: 16,
-          right: 16,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text('Mode de paiement', style: TextStyle(fontSize: 18)),
-            RadioListTile<String>(
-              title: const Text('Carte'),
-              value: 'card',
-              groupValue: paymentMethod,
-              onChanged: (v) => (ctx as Element).markNeedsBuild(() => paymentMethod = v),
-            ),
-            RadioListTile<String>(
-              title: const Text('Espèces à la livraison'),
-              value: 'cash',
-              groupValue: paymentMethod,
-              onChanged: (v) => (ctx as Element).markNeedsBuild(() => paymentMethod = v),
-            ),
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Adresse ou point de rendez-vous',
+      isScrollControlled: true,
+      builder: (ctx) {
+        String? paymentMethod;
+        String address = '';
+
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(ctx).viewInsets.bottom,
+                top: 16,
+                left: 16,
+                right: 16,
               ),
-              onChanged: (v) => address = v.trim(),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: (paymentMethod != null)
-                  ? () {
-                      final newOrder = Order(
-                        name: items.first.resto.name,
-                        image: _mapToAssetImage(items.first.resto.name),
-                        itemCount: items.fold(0, (t, i) => t + i.quantity),
-                        price: items.fold(
-                            0.0, (t, i) => t + i.quantity * i.resto.price),
-                        date: DateTime.now(),
-                        status: OrderStatus.inProgress,
-                      );
-                      Navigator.pop(ctx);
-                      context.read<CartRepository>().clear();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => TrackingScreen(
-                            order: newOrder,
-                            paymentMethod: paymentMethod!,
-                            address: address,
-                          ),
-                        ),
-                      );
-                    }
-                  : null,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFF002B),
-                padding: const EdgeInsets.symmetric(vertical: 14),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('Mode de paiement', style: TextStyle(fontSize: 18)),
+                  RadioListTile<String>(
+                    title: const Text('Carte'),
+                    value: 'card',
+                    groupValue: paymentMethod,
+                    onChanged: (v) => setState(() => paymentMethod = v),
+                  ),
+                  RadioListTile<String>(
+                    title: const Text('Espèces à la livraison'),
+                    value: 'cash',
+                    groupValue: paymentMethod,
+                    onChanged: (v) => setState(() => paymentMethod = v),
+                  ),
+                  TextField(
+                    decoration: const InputDecoration(
+                      labelText: 'Adresse ou point de rendez-vous',
+                    ),
+                    onChanged: (v) => address = v.trim(),
+                  ),
+                  const SizedBox(height: 12),
+                  ElevatedButton(
+                    onPressed: (paymentMethod != null)
+                        ? () {
+                            final newOrder = Order(
+                              name: items.first.resto.name,
+                              image: _mapToAssetImage(items.first.resto.name),
+                              itemCount: items.fold(0, (t, i) => t + i.quantity),
+                              price: items.fold(0.0, (t, i) => t + i.quantity * i.resto.price),
+                              date: DateTime.now(),
+                              status: OrderStatus.inProgress,
+                            );
+                            Navigator.pop(ctx);
+                            context.read<CartRepository>().clear();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => TrackingScreen(order: newOrder),
+                              ),
+                            );
+                          }
+                        : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFFF002B),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    child: const Text('Valider la commande', style: TextStyle(fontSize: 16)),
+                  ),
+                  const SizedBox(height: 16),
+                ],
               ),
-              child: const Text('Valider la commande', style: TextStyle(fontSize: 16)),
-            ),
-            const SizedBox(height: 16),
-          ],
-        ),
-      ),
+            );
+          },
+        );
+      },
     );
   }
 
-  // Reprend ta méthode d'association nom→image
   String _mapToAssetImage(String name) {
     final normalized = name.toLowerCase();
     if (normalized.contains('burger')) return 'assets/images/Burger Tama.png';
