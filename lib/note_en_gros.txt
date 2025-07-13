@@ -622,3 +622,93 @@ Etape3 : la gestion de la base de données .
         •	Améliorer la structure du projet avec un Service Layer
 
     
+---------------------------------------------------------------------------------------------
+
+Dimanche 🧍‍♀️
+
+    👾
+    Voici un récapitulatif complet de ce que nous avons mis en place jusqu’à présent dans ton application Flutter :
+
+    ⸻
+
+    ✅ 1. Ajout d’images locales & mapping
+    •	Ajout de multiples images dans assets/images/ (pizza, tacos, sushi, etc.)
+    •	Configuration dans pubspec.yaml
+    •	Fonction _mapToAssetImage(String) qui associe dynamiquement le nom du plat à une image locale
+
+    ⸻
+
+    ✅ 2. Écran de panier (CartScreen)
+    •	Affiche dynamiquement les items du panier (quantité + image + nom + prix)
+    •	Boutons + et - pour ajuster la quantité
+    •	Si vide : illustration + message “Your cart is empty!”
+
+    ⸻
+
+    ✅ 3. Checkout avec formulaire
+    •	Appui sur Checkout ouvre une modale avec champs à remplir :
+    •	Méthode de paiement (Carte ou Espèces)
+    •	Adresse / point de rendez-vous
+    •	Si tout est rempli → bouton “Valider la commande”
+    •	Redirection automatique vers l’écran TrackingScreen après validation
+
+    ⸻
+
+    ✅ 4. Commande et tracking
+    •	Lors de la validation, une instance Order est créée avec :
+    •	nom du plat
+    •	quantité totale
+    •	prix total
+    •	image locale associée
+    •	status: OrderStatus.inProgress
+    •	Redirection vers TrackingScreen (affiche état de la commande)
+
+    ⸻
+
+    ✅ 5. Profil utilisateur
+    •	Page ProfileScreen avec :
+    •	Modification de nom et email
+    •	Choix d’une photo de profil (depuis caméra, galerie ou icône)
+    •	Onglet FoodMarket (infos légales, logout)
+    •	Bouton “Ajouter une carte” → AddCardScreen (à créer)
+
+    ⸻
+
+    ✅ 6. Structure et gestion d’état
+    •	Architecture claire avec Provider pour CartRepository
+    •	Séparation des modèles (Restaut, Order, CartItem)
+    •	Navigation propre avec MaterialPageRoute
+
+    ⸻
+
+ lib
+
+
+🧙‍♂️🫸l instant l arbre : lib/
+                        ├── core
+                        │   ├── bloc
+                        │   ├── cart_repository.dart
+                        │   ├── models
+                        │   │   ├── cart_item.dart
+                        │   │   ├── order.dart
+                        │   │   └── restaut.dart
+                        │   └── order_repository.dart
+                        ├── main.dart
+                        ├── note_en_gros.txt
+                        ├── screens
+                        │   ├── add_card_screen.dart
+                        │   ├── cart_screen.dart
+                        │   ├── home_screen.dart
+                        │   ├── main_screen.dart
+                        │   ├── order_screen.dartÒ
+                        │   ├── profile_screen.dart
+                        │   ├── restaut_detail_screen.dart
+                        │   ├── restaut_list_screen.dart
+                        │   ├── sign_in_screen.dart
+                        │   ├── sign_up_screen.dart
+                        │   ├── splash_screen.dart
+                        │   ├── success_sign_up_screen.dart
+                        │   └── tracking_screen.dart
+                        └── widgets
+                            └── custom_text_field.dart
+
