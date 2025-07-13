@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../core/cart_repository.dart';
 import '../core/models/restaut.dart';
 import '../core/models/order.dart';
+import 'tracking_screen.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -84,35 +85,25 @@ class CartScreen extends StatelessWidget {
               color: Colors.white,
               child: ElevatedButton(
                 onPressed: () {
-                  // Création de l'objet Order
                   final newOrder = Order(
                     name: items.first.resto.name,
-                    image: _mapToAssetImage(
-                        items.first.resto.name),
-                    itemCount: items.fold(
-                        0, (total, item) => total + item.quantity),
-                    price: items.fold(
-                        0.0,
-                        (total, item) =>
-                            total + item.resto.price * item.quantity),
+                    image: _mapToAssetImage(items.first.resto.name),
+                    itemCount: items.fold(0, (total, item) => total + item.quantity),
+                    price: items.fold(0.0, (total, item) => total + item.resto.price * item.quantity),
                     date: DateTime.now(),
                     status: OrderStatus.inProgress,
                   );
 
-                  debugPrint(
-                      'Commande créée: ${newOrder.name} • ${newOrder.itemCount} items • ${newOrder.price} €');
-
-                  // Vider le panier
                   context.read<CartRepository>().clear();
 
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Commande créée !')),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => TrackingScreen(order: newOrder)),
                   );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFF002B),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 child: const Text('Checkout',
                     style: TextStyle(fontSize: 18)),
@@ -122,7 +113,6 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  // Associe un nom de plat avec son image local
   String _mapToAssetImage(String name) {
     final normalized = name.toLowerCase();
     if (normalized.contains('burger')) {
@@ -143,6 +133,6 @@ class CartScreen extends StatelessWidget {
     if (normalized.contains('noodle')) {
       return 'assets/images/Healthy Noodle.png';
     }
-    return 'assets/images/logo.png'; // image par défaut
+    return 'assets/images/logo.png';
   }
 }
