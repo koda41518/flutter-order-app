@@ -21,3 +21,5 @@ class RemoveItem extends CartEvent {
 }
 
 class ClearCart extends CartEvent {}
+
+class MarkOrderSuccess extends CartEvent {}

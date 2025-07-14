@@ -4,7 +4,7 @@ import 'cart_state.dart';
 import '../../models/cart_item.dart';
 
 class CartBloc extends HydratedBloc<CartEvent, CartState> {
-  CartBloc() : super(const CartState([])) {
+  CartBloc() : super(const CartState(items: [], orderSuccess: false)) {
     on<AddItem>((event, emit) {
       final updated = List<CartItem>.from(state.items);
       final index = updated.indexWhere((e) => e.resto.name == event.item.name);
@@ -15,7 +15,7 @@ class CartBloc extends HydratedBloc<CartEvent, CartState> {
       } else {
         updated.add(CartItem(resto: event.item, quantity: 1));
       }
-      emit(CartState(updated));
+      emit(state.copyWith(items: updated, orderSuccess: false));
     });
 
     on<RemoveItem>((event, emit) {
@@ -30,19 +30,22 @@ class CartBloc extends HydratedBloc<CartEvent, CartState> {
           updated.removeAt(index);
         }
       }
-      emit(CartState(updated));
+      emit(state.copyWith(items: updated, orderSuccess: false));
     });
 
-    on<ClearCart>((_, emit) => emit(const CartState([])));
+    on<ClearCart>((_, emit) {
+      emit(state.copyWith(items: [], orderSuccess: false));
+    });
+
+    on<MarkOrderSuccess>((_, emit) {
+      emit(state.copyWith(orderSuccess: true));
+    });
   }
 
   @override
   CartState? fromJson(Map<String, dynamic> json) {
     try {
-      final items = (json['items'] as List)
-          .map((e) => CartItem.fromJson(e))
-          .toList();
-      return CartState(items);
+      return CartState.fromJson(json);
     } catch (_) {
       return null;
     }
@@ -50,8 +53,6 @@ class CartBloc extends HydratedBloc<CartEvent, CartState> {
 
   @override
   Map<String, dynamic>? toJson(CartState state) {
-    return {
-      'items': state.items.map((e) => e.toJson()).toList(),
-    };
+    return state.toJson();
   }
 }

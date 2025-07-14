@@ -81,16 +81,37 @@ class CartScreen extends StatelessWidget {
           final items = state.items;
           if (items.isEmpty) return const SizedBox.shrink();
 
+          final total = items.fold(
+            0.0,
+            (t, i) => t + i.quantity * i.resto.price,
+          );
+
           return Container(
             padding: const EdgeInsets.all(16),
             color: Colors.white,
-            child: ElevatedButton(
-              onPressed: () => _openCheckoutModal(context, items),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFF002B),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-              ),
-              child: const Text('Checkout', style: TextStyle(fontSize: 18)),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Total', style: TextStyle(fontSize: 18)),
+                    Text(
+                      '${total.toStringAsFixed(2)} €',
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                  onPressed: () => _openCheckoutModal(context, items),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFFF002B),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
+                  child: const Text('Checkout', style: TextStyle(fontSize: 18)),
+                ),
+              ],
             ),
           );
         },
