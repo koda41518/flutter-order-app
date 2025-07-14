@@ -1,9 +1,9 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'cart_event.dart';
 import 'cart_state.dart';
 import '../../models/cart_item.dart';
 
-class CartBloc extends Bloc<CartEvent, CartState> {
+class CartBloc extends HydratedBloc<CartEvent, CartState> {
   CartBloc() : super(const CartState([])) {
     on<AddItem>((event, emit) {
       final updated = List<CartItem>.from(state.items);
@@ -34,5 +34,24 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     });
 
     on<ClearCart>((_, emit) => emit(const CartState([])));
+  }
+
+  @override
+  CartState? fromJson(Map<String, dynamic> json) {
+    try {
+      final items = (json['items'] as List)
+          .map((e) => CartItem.fromJson(e))
+          .toList();
+      return CartState(items);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  @override
+  Map<String, dynamic>? toJson(CartState state) {
+    return {
+      'items': state.items.map((e) => e.toJson()).toList(),
+    };
   }
 }
