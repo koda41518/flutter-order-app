@@ -30,6 +30,39 @@ class CartScreen extends StatelessWidget {
         builder: (context, state) {
           final items = state.items;
 
+          if (state.orderSuccess) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/images/preparing_order.png', width: 200),
+                  const SizedBox(height: 24),
+                  const Text('Commande en cours',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 16),
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.track_changes),
+                    label: const Text('Suivre la commande'),
+                    onPressed: () {
+                      // redirection tracking
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFFF002B),
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  TextButton(
+                    onPressed: () {
+                      context.read<CartBloc>().add(ClearCart());
+                    },
+                    child: const Text('Commander autre chose'),
+                  ),
+                ],
+              ),
+            );
+          }
+
           if (items.isEmpty) {
             return Center(
               child: Column(
@@ -79,12 +112,9 @@ class CartScreen extends StatelessWidget {
       bottomNavigationBar: BlocBuilder<CartBloc, CartState>(
         builder: (context, state) {
           final items = state.items;
-          if (items.isEmpty) return const SizedBox.shrink();
+          if (items.isEmpty || state.orderSuccess) return const SizedBox.shrink();
 
-          final total = items.fold(
-            0.0,
-            (t, i) => t + i.quantity * i.resto.price,
-          );
+          final total = state.totalPrice;
 
           return Container(
             padding: const EdgeInsets.all(16),

@@ -1,34 +1,12 @@
 import 'package:flutter/material.dart';
 import '../core/models/restaut.dart';
+import '../restaurantRepository.dart';
 import 'restaut_detail_screen.dart';
 
 class RestautListScreen extends StatelessWidget {
   RestautListScreen({super.key});
 
-  final List<Restaut> restaurants = [
-    Restaut(
-      name: "Cherry Healthy",
-      description: "Delicious healthy meals",
-      imageUrl: "https://images.unsplash.com/photo-1600891964599-f61ba0e24092",
-      rating: 4.5,
-      price: 12.90,
-    ),
-    
-    Restaut(
-      name: "Burger Tama",
-      description: "Big juicy burgers",
-      imageUrl: "https://images.unsplash.com/photo-1550547660-d9450f859349",
-      rating: 4.2,
-      price: 9.50,
-    ),
-    Restaut(
-      name: "Healthy Noodle",
-      description: "Light and tasty noodles",
-      imageUrl: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90",
-      rating: 4.8,
-      price: 11.00,
-    ),
-  ];
+  final List<Restaut> restaurants = RestaurantRepository().getAllRestaurants();
 
   @override
   Widget build(BuildContext context) {
