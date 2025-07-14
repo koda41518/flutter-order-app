@@ -11,6 +11,10 @@ class RestaurantRepository {
 
   Future<Restaut?> getByName(String name) async {
     final restos = await getAllRestaurants();
-    return restos.firstWhere((r) => r.name == name, orElse: () => null);
+    try {
+      return restos.firstWhere((r) => r.name == name);
+    } catch (_) {
+      return null;
+    }
   }
 }
