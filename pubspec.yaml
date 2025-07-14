@@ -29,17 +29,4 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/logo.png
-    - assets/images/success_order.png
-    - assets/images/empty_order.png
-    - assets/images/loading_anim.gif
-    - assets/images/delivery_in_progress.png
-    - assets/images/Loading-bar.gif
-    - assets/images/Hourglass.gif
-    - assets/images/Burger Tama.png
-    - assets/images/Cherry Healthy.png
-    - assets/images/Healthy Noodle.png
-    - assets/images/pizza.png
-    - assets/images/sushi.png
-    - assets/images/table_a_manger.png
-    - assets/images/tacos.png
+    - assets/images/

@@ -23,7 +23,9 @@ class RestautListScreen extends StatelessWidget {
               contentPadding: const EdgeInsets.all(12),
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.network(resto.imageUrl, width: 60, height: 60, fit: BoxFit.cover),
+                child: resto.imageUrl.startsWith('http')
+                  ? Image.network(resto.imageUrl, width: 60, height: 60, fit: BoxFit.cover)
+                  : Image.asset(resto.imageUrl, width: 60, height: 60, fit: BoxFit.cover),
               ),
               title: Text(resto.name, style: const TextStyle(fontWeight: FontWeight.bold)),
               subtitle: Text("⭐ ${resto.rating} • ${resto.price.toStringAsFixed(2)} €"),

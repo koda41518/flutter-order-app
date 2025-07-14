@@ -5,6 +5,7 @@ import 'restaut_list_screen.dart';
 import 'cart_screen.dart';
 import 'order_screen.dart';
 import 'profile_screen.dart';
+import '../core/bloc/cart/cart_state.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

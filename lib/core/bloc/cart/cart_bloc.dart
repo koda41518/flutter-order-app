@@ -4,7 +4,7 @@ import 'cart_state.dart';
 import '../../models/cart_item.dart';
 
 class CartBloc extends HydratedBloc<CartEvent, CartState> {
-  CartBloc() : super(const CartState(items: [], orderSuccess: false)) {
+  CartBloc() : super(const CartState([])) {
     on<AddItem>((event, emit) {
       final updated = List<CartItem>.from(state.items);
       final index = updated.indexWhere((e) => e.resto.name == event.item.name);

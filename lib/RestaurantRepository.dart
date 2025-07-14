@@ -1,4 +1,4 @@
-import '../models/restaut.dart';
+import 'core/models/restaut.dart';
 import 'restaurant_data.dart';
 
 class RestaurantRepository {
@@ -7,6 +7,10 @@ class RestaurantRepository {
   }
 
   Restaut? getByName(String name) {
-    return allRestaurants.firstWhere((r) => r.name == name, orElse: () => null as Restaut);
+    try {
+      return allRestaurants.firstWhere((r) => r.name == name);
+    } catch (_) {
+      return null;
+    }
   }
 }
