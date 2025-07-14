@@ -18,7 +18,9 @@ class RestautDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(resto.imageUrl, height: 200, fit: BoxFit.cover),
+            resto.imageUrl.startsWith('http')
+            ? Image.network(resto.imageUrl, height: 200, fit: BoxFit.cover)
+            : Image.asset(resto.imageUrl, height: 200, fit: BoxFit.cover),
             const SizedBox(height: 16),
             Text(resto.name, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
             Text("⭐ ${resto.rating}", style: const TextStyle(color: Colors.grey)),
