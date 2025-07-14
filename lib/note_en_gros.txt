@@ -712,3 +712,50 @@ Dimanche 🧍‍♀️
                         └── widgets
                             └── custom_text_field.dart
 
+---------------------------------------------------------------------------------------------
+on a mis en place une autre disposition pour gerer le backend
+    	•	📦 core/bloc/cart → Architecture propre pour la gestion d’état du panier (Bloc + Event + State)
+	•	📦 core/models → Modèles clairs et bien organisés (cart_item, restaut, order)
+	•	📱 screens/ → Toutes les pages de l’app bien séparées et modulables
+	•	🧠 Tu n’as plus de CartRepository dans ton arborescence, ce qui est cohérent vu que la logique est gérée via CartBloc.
+
+
+🧙‍♂️🫸l instant l arbre : lib
+                        ├── core
+                        │   ├── bloc
+                        │   │   └── cart
+                        │   │       ├── cart_bloc.dart
+                        │   │       ├── cart_event.dart
+                        │   │       └── cart_state.dart
+                        │   ├── models
+                        │   │   ├── cart_item.dart
+                        │   │   ├── order.dart
+                        │   │   └── restaut.dart
+                        │   └── order_repository.dart
+                        ├── main.dart
+                        ├── note_en_gros.txt
+                        ├── screens
+                        │   ├── add_card_screen.dart
+                        │   ├── cart_screen.dart
+                        │   ├── home_screen.dart
+                        │   ├── main_screen.dart
+                        │   ├── order_screen.dart
+                        │   ├── profile_screen.dart
+                        │   ├── restaut_detail_screen.dart
+                        │   ├── restaut_list_screen.dart
+                        │   ├── sign_in_screen.dart
+                        │   ├── sign_up_screen.dart
+                        │   ├── splash_screen.dart
+                        │   ├── success_sign_up_screen.dart
+                        │   └── tracking_screen.dart
+                        └── widgets
+                            └── custom_text_field.dart
+
+
+📍 Étapes suivantes possibles (possibles) :
+	1.	🧠 Persistance locale du panier (hydrated_bloc ou shared_preferences)
+	2.	🛠 Tests unitaires du CartBloc
+	3.	🌍 Internationalisation (i18n) si tu veux gérer plusieurs langues
+	4.	📲 Backend/API : communication avec un vrai serveur pour les commandes
+	5.	🔒 Auth sécurisée avec token + gestion session
+	6.	💳 Paiement réel via Stripe, PayPal, etc.
