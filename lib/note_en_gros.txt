@@ -759,3 +759,7 @@ on a mis en place une autre disposition pour gerer le backend
 	4.	📲 Backend/API : communication avec un vrai serveur pour les commandes
 	5.	🔒 Auth sécurisée avec token + gestion session
 	6.	💳 Paiement réel via Stripe, PayPal, etc.
+
+
+
+1; base de donné de restaurant:

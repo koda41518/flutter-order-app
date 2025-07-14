@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../core/models/restaut.dart';
 import '../core/bloc/cart/cart_bloc.dart';
 import '../core/bloc/cart/cart_event.dart';
+import '../image_helper.dart';
 
 class RestautDetailScreen extends StatelessWidget {
   final Restaut resto;

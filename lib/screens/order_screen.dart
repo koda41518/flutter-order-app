@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../core/models/order.dart';
+import '../core/order_repository.dart';
+import '../image_helper.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -10,29 +12,7 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> with SingleTickerProviderStateMixin {
   late final TabController _tabController;
-
-  final List<Order> _orders = [
-    Order(name: 'Burger Tama', image: 'assets/images/Burger Tama.png', itemCount: 3, price: 18000000),
-    Order(name: 'Cherry Healthy', image: 'assets/images/Cherry Healthy.png', itemCount: 10, price: 450000),
-    Order(name: 'Sushi', image: 'assets/images/sushi.png', itemCount: 2, price: 900500),
-    Order(name: 'Pizza', image: 'assets/images/pizza.png', itemCount: 10, price: 450000),
-    Order(
-      name: 'Healthy Noodle',
-      image: 'assets/images/Healthy Noodle.png',
-      itemCount: 1,
-      price: 289000,
-      status: OrderStatus.completed,
-      date: DateTime(2024, 6, 12, 14, 0),
-    ),
-    Order(
-      name: 'Tacos',
-      image: 'assets/images/tacos.png',
-      itemCount: 1,
-      price: 6000000,
-      status: OrderStatus.cancelled,
-      date: DateTime(2024, 5, 2, 9, 0),
-    ),
-  ];
+  final OrderRepository _orderRepo = OrderRepository();
 
   @override
   void initState() {
@@ -40,36 +20,38 @@ class _OrderScreenState extends State<OrderScreen> with SingleTickerProviderStat
     super.initState();
   }
 
-  List<Order> get inProgressOrders =>
-      _orders.where((order) => order.status == OrderStatus.inProgress).toList();
-
-  List<Order> get pastOrders =>
-      _orders.where((order) => order.status != OrderStatus.inProgress).toList();
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Your Orders'),
-        backgroundColor: const Color(0xFFFF002B),
-        bottom: TabBar(
-          controller: _tabController,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
-          indicatorColor: Colors.white,
-          tabs: const [
-            Tab(text: 'In Progress'),
-            Tab(text: 'Past Orders'),
-          ],
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildOrderList(inProgressOrders),
-          _buildOrderList(pastOrders),
-        ],
-      ),
+    return AnimatedBuilder(
+      animation: _orderRepo,
+      builder: (context, _) {
+        final inProgress = _orderRepo.inProgressOrders;
+        final past = _orderRepo.pastOrders;
+
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Your Orders'),
+            backgroundColor: const Color(0xFFFF002B),
+            bottom: TabBar(
+              controller: _tabController,
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.white70,
+              indicatorColor: Colors.white,
+              tabs: const [
+                Tab(text: 'In Progress'),
+                Tab(text: 'Past Orders'),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            controller: _tabController,
+            children: [
+              _buildOrderList(inProgress),
+              _buildOrderList(past),
+            ],
+          ),
+        );
+      },
     );
   }
 

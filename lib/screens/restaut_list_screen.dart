@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../core/models/restaut.dart';
 import '../restaurantRepository.dart';
 import 'restaut_detail_screen.dart';
+import '../image_helper.dart';
 
 class RestautListScreen extends StatelessWidget {
   const RestautListScreen({super.key});
@@ -33,9 +34,7 @@ class RestautListScreen extends StatelessWidget {
                   contentPadding: const EdgeInsets.all(12),
                   leading: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: resto.imageUrl.startsWith('http')
-                        ? Image.network(resto.imageUrl, width: 60, height: 60, fit: BoxFit.cover)
-                        : Image.asset(resto.imageUrl, width: 60, height: 60, fit: BoxFit.cover),
+                    child: buildImage(resto.imageUrl, width: 60, height: 60),
                   ),
                   title: Text(resto.name, style: const TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text("⭐ ${resto.rating} • ${resto.price.toStringAsFixed(2)} €"),

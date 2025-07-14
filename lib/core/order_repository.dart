@@ -8,7 +8,12 @@ class OrderRepository extends ChangeNotifier {
 
   final List<Order> _orders = [];
   List<Order> get orders => List.unmodifiable(_orders);
+  
+  List<Order> get inProgressOrders =>
+      _orders.where((o) => o.status == OrderStatus.inProgress).toList();
 
+  List<Order> get pastOrders =>
+      _orders.where((o) => o.status != OrderStatus.inProgress).toList();
   void add(Order order) {
     _orders.add(order);
     notifyListeners();
