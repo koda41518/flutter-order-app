@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Burger Tama",
+    "description": "Délicieux burgers artisanaux",
+    "price": 8.5,
+    "rating": 4.5,
+    "imageUrl": "assets/images/Burger Tama.png"
+  },
+  {
+    "name": "Cherry Healthy",
+    "description": "Repas sains et équilibrés",
+    "price": 9.2,
+    "rating": 4.8,
+    "imageUrl": "assets/images/Cherry Healthy.png"
+  },
+  {
+    "name": "Sushi World",
+    "description": "Un voyage de saveurs nippones.",
+    "price": 24.5,
+    "rating": 4.8,
+    "imageUrl": "assets/images/sushi.png"
+  },
+  {
+    "name": "tacos",
+    "description": "mexicooo.",
+    "price": 10.5,
+    "rating": 4.8,
+    "imageUrl": "assets/images/tacos.png"
+  }
+]

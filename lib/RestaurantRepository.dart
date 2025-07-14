@@ -1,16 +1,16 @@
-import 'core/models/restaut.dart';
-import 'restaurant_data.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart';
+import '../core/models/restaut.dart';
 
 class RestaurantRepository {
-  List<Restaut> getAllRestaurants() {
-    return allRestaurants;
+  Future<List<Restaut>> getAllRestaurants() async {
+    final data = await rootBundle.loadString('assets/data/restaurants.json');
+    final List<dynamic> list = json.decode(data);
+    return list.map((e) => Restaut.fromJson(e)).toList();
   }
 
-  Restaut? getByName(String name) {
-    try {
-      return allRestaurants.firstWhere((r) => r.name == name);
-    } catch (_) {
-      return null;
-    }
+  Future<Restaut?> getByName(String name) async {
+    final restos = await getAllRestaurants();
+    return restos.firstWhere((r) => r.name == name, orElse: () => null);
   }
 }
