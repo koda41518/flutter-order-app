@@ -20,4 +20,25 @@ class Order {
     this.status = OrderStatus.inProgress,
     DateTime? date,
   }) : date = date ?? DateTime.now();
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'image': image,
+        'itemCount': itemCount,
+        'price': price,
+        'status': status.name,
+        'date': date.toIso8601String(),
+      };
+
+  factory Order.fromJson(Map<String, dynamic> json) => Order(
+        name: json['name'],
+        image: json['image'],
+        itemCount: json['itemCount'],
+        price: (json['price'] as num).toDouble(),
+        status: OrderStatus.values.firstWhere(
+          (s) => s.name == json['status'],
+          orElse: () => OrderStatus.inProgress,
+        ),
+        date: DateTime.parse(json['date']),
+      );
 }

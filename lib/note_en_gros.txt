@@ -985,5 +985,71 @@ Ajoute de Firebase:
                             └── custom_text_field.dart
 
 
-wow comment y avais un probleme dans li'indentation 😒
+wow comment y avais un probleme dans l'indentation 😒
 bref c est bon l'app marche plutot bien avec le mode sombre, j ai pas encore declencher firebase 
+
+
+voila un rappelle justequ à present :
+    ⸻
+
+    ✅ Ce qu’on a fait jusqu’ici 👾:
+
+    🎯 Refonte architecture Flutter
+        •	Organisation en dossiers : bloc, models, screens, repository, widgets, etc.
+        •	Utilisation de Bloc (et hydrated_bloc) pour gérer l’état global du panier.
+
+    🛍️ Gestion du panier (Cart)
+        •	Création de CartBloc, CartEvent, CartState
+        •	Ajout/suppression d’articles
+        •	Calcul du prix total
+        •	Persistance avec hydrated_bloc (le panier reste après redémarrage de l’app)
+
+    🍽️ Données des restaurants
+        •	Passage de données en fichier JSON local (assets/data/restaurants.json)
+        •	Lecture JSON avec RestaurantRepository asynchrone
+        •	Conversion via Restaut.fromJson() avec json_serializable
+
+    🧾 Liste des commandes (Orders)
+        •	Utilisation de OrderRepository centralisé
+        •	Suppression de la liste statique des commandes
+        •	Affichage dynamique dans OrderScreen
+
+    🌗 Mode sombre
+        •	Création d’un ThemeProvider
+        •	Intégration du Switch dans l’écran de profil
+        •	Application du ThemeMode dans MaterialApp
+
+    🖼️ Refactoring images
+        •	Mise en place d’un helper universel buildImage() pour centraliser les appels à Image.asset() / Image.network()
+
+    🔥 Intégration Firebase (préparation)
+        •	Initialisation de Firebase avec Firebase.initializeApp()
+        •	Ajout de dépendances : firebase_auth, cloud_firestore, firebase_storage, firebase_messaging
+        •	Réglage des conflits de versions avec pubspec.yaml
+
+    ⸻
+
+# 🧙‍♂️j ai test le code et ça semble marcher avant d'enclencher firebase
+
+🛠️ Prochaines étapes possibles :
+
+    1. 🔐 Authentification Firebase
+        •	Créer un système d’inscription/connexion avec firebase_auth
+        •	Ajouter support Google Sign-In
+
+    2. 🧾 Sauvegarder commandes sur Firestore
+        •	Au lieu de stocker localement, envoyer les commandes dans une base de données en ligne
+
+    3. ☁️ Firebase Storage
+        •	Uploader les photos de profil choisies dans ProfileScreen vers le cloud
+        •	Les recharger plus tard depuis une URL
+
+    4. 📬 Notifications push
+        •	Utiliser firebase_messaging pour envoyer des notifications à l’utilisateur
+    (ex : commande validée, promo, etc.)
+
+    5. 💳 Paiement en ligne
+        •	Intégrer Stripe ou PayPal pour permettre un vrai paiement
+
+
+
