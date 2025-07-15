@@ -762,7 +762,7 @@ Prédictions 🔮 :
 
 ---------------------------------------------------------------------------------------------
 
-Un récapitulatif  chronologique de tout ce que qu'on a mis en place depuis qu'on a supprimé le cart_repository:
+‼️Un récapitulatif  chronologique de tout ce que qu'on a mis en place depuis qu'on a supprimé le cart_repository:
 👾
     ⸻
 
@@ -907,8 +907,8 @@ on a mis en place les base pour 🧠 hydrated_bloc  donc
                         │   └── tracking_screen.dart
                         └── widgets
                             └── custom_text_field.dart
-
-Ajoute de Firebase:
+---------------------------------------------------------------------------------------------
+‼️Ajoute de Firebase:
     ⸻
 
     ✅ Objectif : Connecter ton app Flutter à Firebase proprement
@@ -988,8 +988,8 @@ Ajoute de Firebase:
 wow comment y avais un probleme dans l'indentation 😒
 bref c est bon l'app marche plutot bien avec le mode sombre, j ai pas encore declencher firebase 
 
-
-voila un rappelle justequ à present :
+---------------------------------------------------------------------------------------------
+‼️voila un rappelle justequ à present :
     ⸻
 
     ✅ Ce qu’on a fait jusqu’ici 👾:
@@ -1051,5 +1051,15 @@ voila un rappelle justequ à present :
     5. 💳 Paiement en ligne
         •	Intégrer Stripe ou PayPal pour permettre un vrai paiement
 
+---------------------------------------------------------------------------------------------
 
 
+lancement de  l'API
+✅ Recap de notre feuille de route :
+	1.	🎯 Brancher Flutter à l’API Express (restos + commandes)
+	2.	🧩 Injecter ça dans :
+	•	restaurant_data.dart → pour GET /restaurants
+	•	order_repository.dart → pour POST /orders
+	3.	⚙️ Connecter le bloc (ex: CartBloc) pour faire le pont UI ↔ repo ↔ API
+	4.	🧪 Tester les appels dans l’app (commande, affichage)
+	5.	(plus tard) 🧊 Ajouter cache local (si offline nécessaire)
