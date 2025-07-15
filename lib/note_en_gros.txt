@@ -517,7 +517,7 @@ Etape3 : la gestion de la base de données .
     j avais reussi a ouvrir le simulateur apple , genre un iphone , (wlh j ai meme une video) mais j ai oublier de noté comment j avais fait ducoup j ai oublier et 
     j ai perdu le simulateur ios, des que je trouve comment je note directement
     
-
+---------------------------------------------------------------------------------------------
 🧙‍♂️🫸l instant l arbre : lib/
                         ├── core/
                         │   ├── bloc/
@@ -687,7 +687,7 @@ Dimanche 🧍‍♀️
 🧙‍♂️🫸l instant l arbre : lib/
                         ├── core
                         │   ├── bloc
-                        │   ├── cart_repository.dart
+                        │   ├── cart_repository.dart. <----(on va le supprimer💥)
                         │   ├── models
                         │   │   ├── cart_item.dart
                         │   │   ├── order.dart
@@ -723,7 +723,7 @@ on a mis en place une autre disposition pour gerer le backend
 🧙‍♂️🫸l instant l arbre : lib
                         ├── core
                         │   ├── bloc
-                        │   │   └── cart
+                        │   │   └── cart <---   # ( 🧙‍♂️ 🧠 remplace cart_repository )
                         │   │       ├── cart_bloc.dart
                         │   │       ├── cart_event.dart
                         │   │       └── cart_state.dart
@@ -751,15 +751,140 @@ on a mis en place une autre disposition pour gerer le backend
                         └── widgets
                             └── custom_text_field.dart
 
+Prédictions 🔮 :
+    📍 Étapes suivantes possibles (prédiction) :
+        1.	🧠 Persistance locale du panier (hydrated_bloc ou shared_preferences)
+        2.	🛠 Tests unitaires du CartBloc
+        3.	🌍 Internationalisation (i18n) si tu veux gérer plusieurs langues
+        4.	📲 Backend/API : communication avec un vrai serveur pour les commandes
+        5.	🔒 Auth sécurisée avec token + gestion session
+        6.	💳 Paiement réel via Stripe, PayPal, etc.
 
-📍 Étapes suivantes possibles (possibles) :
-	1.	🧠 Persistance locale du panier (hydrated_bloc ou shared_preferences)
-	2.	🛠 Tests unitaires du CartBloc
-	3.	🌍 Internationalisation (i18n) si tu veux gérer plusieurs langues
-	4.	📲 Backend/API : communication avec un vrai serveur pour les commandes
-	5.	🔒 Auth sécurisée avec token + gestion session
-	6.	💳 Paiement réel via Stripe, PayPal, etc.
+---------------------------------------------------------------------------------------------
+
+Un récapitulatif  chronologique de tout ce que qu'on a mis en place depuis qu'on a supprimé le cart_repository:
+👾
+    ⸻
+
+    🔁 1. Refactorisation initiale de la logique panier (Cart)
+        •	Suppression de cart_repository.
+        •	Mise en place d’un BLoC pattern :
+        •	cart_bloc.dart → logique des événements (AddItem, RemoveItem, etc.)
+        •	cart_event.dart → définition des événements.
+        •	cart_state.dart → structure avec List<CartItem>, orderSuccess, totalPrice, etc.
+        •	Tous les écrans interagissent via BlocBuilder / BlocProvider.
+
+    ⸻
+
+    🍽️ 2. Problème avec la gestion des restaurants ; # (🧙‍♂️ en gros c est chiant)
+        •	Les restos étaient dupliqués en dur dans plusieurs fichiers :
+        •	restaut_list_screen.dart
+        •	cart_bloc.dart (via CartItem)
+        •	restaut_detail_screen.dart
+        •	Inconvénient : maintenance pénible, erreurs potentielles, pas scalable.
+
+    ⸻
+
+    💡 3. Objectif : Centraliser les restos ; # ( 🧙‍♂️ moins chiant 😌 meme plpus simple pour la suite)
+        •	Création d’un fichier unique de référence : restaurant_data.dart.
+        •	Création du RestaurantRepository.dart qui expose :
+        •	getAllRestaurants()
+        •	getByName(name)
+        •	Suppression des listes de restos codées à la main dans les écrans.
+
+    ⸻
+
+    📂 4. Migration vers une base de données JSON ; # ( 🧙‍♂️ utiliser souvent pour lire les données🫸🌝🫷 )
+        •	Création du fichier : assets/data/restaurants.json
+    → Liste complète des restaurants (nom, prix, image, etc.)
+        •	Déplacement de la lecture dans RestaurantRepository :
+
+    final data = await rootBundle.loadString(...);
+    final List<dynamic> jsonList = json.decode(data);
+    return jsonList.map((e) => Restaut.fromJson(e)).toList();
+
+        •	pubspec.yaml : <--- mis à jour 
+                assets:
+                - assets/data/restaurants.json
+                - assets/images/
 
 
 
-1; base de donné de restaurant:
+    ⸻
+
+    🧩 5. Connexion JSON aux widgets  # ( 🧙‍♂️ faus bien les lire ces données )
+        •	restaut_list_screen.dart utilise un FutureBuilder pour charger dynamiquement les restos depuis le repo.
+        •	restaut_detail_screen.dart passe les données de manière déclarative.
+
+    ⸻
+
+    🧑‍🎨 6. Uniformisation du rendu des images # ( 🧙‍♂️ qu il puisse afficher plusieurs type de format d image)
+        •	Création du fichier image_helper.dart avec :
+
+    Widget buildImage(String imageUrl, ...) => imageUrl.startsWith('http')
+        ? Image.network(...)
+        : Image.asset(...);
+
+
+        •	Suppression de la logique startsWith('http') répétée dans chaque écran.
+
+    ⸻
+
+    ✅ Résultat actuel :
+        •	Plus aucun restaurant défini en dur dans les fichiers d’UI.
+        •	Source unique des données : restaurants.json.
+        •	Affichage dynamique basé sur un repository modulaire.
+        •	Utilisation centralisée des images réseau ou locales.
+        •	UI scalable, testable, et facile à maintenir.
+
+jusqu’à présent dans la liste des Prédictions 🔮 ,
+on a mis en place les base pour 🧠 hydrated_bloc  donc
+    ✅1.	🧠 Persistance locale du panier (hydrated_bloc ou shared_preferences)
+
+
+
+ 🧍‍♀️euh  🧌:
+    j ai rajouter un mode sombre, c est pas le plus important mais voila , en plus il est pris en charge pas flutter , 
+    mon idée de base etait juste d avoir un bool qui sert le verification mais cette idée ne permet pas l automatisation  
+    et ne ol applique pas sur tout et ne modifie pas le text, doucoup on a crée un autre fichier 
+
+    ducoup voila l'arbre 
+
+
+🧙‍♂️🫸l instant l arbre : lib
+                        ├── RestaurantRepository.dart
+                        ├── core
+                        │   ├── bloc
+                        │   │   └── cart
+                        │   │       ├── cart_bloc.dart
+                        │   │       ├── cart_event.dart
+                        │   │       └── cart_state.dart
+                        │   ├── models
+                        │   │   ├── cart_item.dart
+                        │   │   ├── order.dart
+                        │   │   ├── restaut.dart
+                        │   │   └── restaut.g.dart
+                        │   ├── order_repository.dart
+                        │   └── providers 🟢
+                        │       └── theme_provider.dart 🟢<---- mode sombre
+                        ├── image_helper.dart
+                        ├── main.dart
+                        ├── note_en_gros.txt
+                        ├── restaurant_data.dart
+                        ├── screens
+                        │   ├── add_card_screen.dart
+                        │   ├── cart_screen.dart
+                        │   ├── home_screen.dart
+                        │   ├── main_screen.dart
+                        │   ├── order_screen.dart
+                        │   ├── profile_screen.dart
+                        │   ├── restaut_detail_screen.dart
+                        │   ├── restaut_list_screen.dart
+                        │   ├── sign_in_screen.dart
+                        │   ├── sign_up_screen.dart
+                        │   ├── splash_screen.dart
+                        │   ├── success_sign_up_screen.dart
+                        │   └── tracking_screen.dart
+                        └── widgets
+                            └── custom_text_field.dart
+

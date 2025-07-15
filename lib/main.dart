@@ -10,6 +10,8 @@ import 'screens/main_screen.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'package:provider/provider.dart';
+import 'core/providers/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,8 +22,11 @@ void main() async {
   HydratedBloc.storage = storage;
 
   runApp(
-    BlocProvider(
-      create: (_) => CartBloc(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        BlocProvider(create: (_) => CartBloc()),
+      ],
       child: const FoodMarketApp(),
     ),
   );
@@ -32,9 +37,22 @@ class FoodMarketApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return MaterialApp(
       title: 'FoodMarket',
       debugShowCheckedModeBanner: false,
+      themeMode: themeProvider.currentTheme,
+      theme: ThemeData(
+        brightness: Brightness.light,
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(backgroundColor: Color(0xFFFF002B)),
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: Colors.black,
+        appBarTheme: const AppBarTheme(backgroundColor: Colors.grey),
+      ),
       home: const MainScreen(),
       routes: {
         '/sign-in': (context) => const SignInScreen(),

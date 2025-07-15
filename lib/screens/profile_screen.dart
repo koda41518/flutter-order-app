@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'add_card_screen.dart';
+import 'package:provider/provider.dart';
+import '../core/providers/theme_provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -111,6 +113,18 @@ class _AccountTabState extends State<_AccountTab> {
             onPressed: () => _editDialog(context, 'Email', email, (val) {
               setState(() => email = val);
             }),
+          ),
+        ),
+        ListTile(
+          leading: const Icon(Icons.brightness_6),
+          title: const Text('Mode sombre'),
+          trailing: Consumer<ThemeProvider>(
+            builder: (context, themeProvider, _) => Switch(
+              value: themeProvider.isDarkMode,
+              onChanged: (value) {
+                themeProvider.toggleTheme(value);
+              },
+            ),
           ),
         ),
       ],
