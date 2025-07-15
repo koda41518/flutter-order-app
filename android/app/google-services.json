@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "220486019687",
+    "project_id": "foodmarket-6fdce",
+    "storage_bucket": "foodmarket-6fdce.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:220486019687:android:07cd928267bb27911182c2",
+        "android_client_info": {
+          "package_name": "com.example.food_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCismXtjA9Gpri_R7EvNBJFxatgG8BLjSM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

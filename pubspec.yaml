@@ -19,6 +19,12 @@ dependencies:
   path_provider: ^2.1.1
   json_annotation: ^4.9.0
   shared_preferences: ^2.2.2 
+  firebase_core: ^2.0.0
+  firebase_auth: ^4.0.0
+  google_sign_in: ^6.0.0
+  cloud_firestore: ^4.0.0
+  firebase_storage: ^11.0.0
+  firebase_messaging: ^15.0.0
 
 dev_dependencies:
   flutter_test:

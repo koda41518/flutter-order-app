@@ -13,12 +13,17 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'core/providers/theme_provider.dart';
 
+import 'package:firebase_core/firebase_core.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialisation Firebase
+  await Firebase.initializeApp();
+
+  // Initialisation HydratedBloc
   final storage = await HydratedStorage.build(
     storageDirectory: await getApplicationDocumentsDirectory(),
   );
-
   HydratedBloc.storage = storage;
 
   runApp(
@@ -31,7 +36,6 @@ void main() async {
     ),
   );
 }
-
 class FoodMarketApp extends StatelessWidget {
   const FoodMarketApp({super.key});
 

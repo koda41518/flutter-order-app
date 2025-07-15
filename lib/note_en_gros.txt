@@ -837,6 +837,26 @@ Un récapitulatif  chronologique de tout ce que qu'on a mis en place depuis qu'o
         •	Utilisation centralisée des images réseau ou locales.
         •	UI scalable, testable, et facile à maintenir.
 
+🧚l arbre des données: assets
+                        ├── data
+                        │   └── restaurants.json
+                        └── images
+                            ├── Burger Tama.png
+                            ├── Cherry Healthy.png
+                            ├── Healthy Noodle.png
+                            ├── Hourglass.gif
+                            ├── Loading-bar.gif
+                            ├── delivery_in_progress.png
+                            ├── empty_order.png
+                            ├── loading_anim.gif
+                            ├── logo.png
+                            ├── pizza.png
+                            ├── success_order.png
+                            ├── sushi.png
+                            ├── table_a_manger.png
+                            └── tacos.png
+
+
 jusqu’à présent dans la liste des Prédictions 🔮 ,
 on a mis en place les base pour 🧠 hydrated_bloc  donc
     ✅1.	🧠 Persistance locale du panier (hydrated_bloc ou shared_preferences)
@@ -888,3 +908,40 @@ on a mis en place les base pour 🧠 hydrated_bloc  donc
                         └── widgets
                             └── custom_text_field.dart
 
+Ajoute de Firebase:
+    ⸻
+
+    ✅ Objectif : Connecter ton app Flutter à Firebase proprement
+
+    Pour permettre une gestion distante des données (restos, users, commandes, etc.).
+
+    ⸻
+
+    ⚙️ 1. Création & Configuration Firebase
+        •	🔥 Tu as créé un projet Firebase appelé foodmarket-6fdce.
+        •	✅ Tu as ajouté une application Android (com.example.food_app) et iOS (com.example.foodApp).
+        •	🧪 Tu avais d’abord coché à tort Web/MacOS/Windows → tu as reconfiguré proprement avec seulement Android & iOS ✔️.
+
+    ⸻
+
+    🧠 2. Génération automatique du fichier Firebase
+        •	Fichier généré automatiquement par la commande flutterfire configure :
+
+    lib/firebase_options.dart
+
+    Ce fichier contient toutes les clés d’accès Firebase pour Android et iOS.
+
+    ⸻
+
+    🛠️ 3. Prochaine étape (optionnelle selon tes besoins)
+
+    Tu peux désormais utiliser Firebase pour :
+
+    Service	Utilité	Package Flutter
+    🔐 Auth	Login/Signup utilisateurs	firebase_auth
+    ☁️ Firestore	Stocker/restaurer les restaurants, commandes, users	cloud_firestore
+    📸 Storage	Stocker les photos de profil/restos en ligne	firebase_storage
+    🔔 Notifications	Notifications push	firebase_messaging
+
+
+    ⸻
