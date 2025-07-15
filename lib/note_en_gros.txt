@@ -945,3 +945,45 @@ Ajoute de Firebase:
 
 
     ⸻
+
+🧙‍♂️🫸l instant l arbre : lib
+                        ├── RestaurantRepository.dart
+                        ├── core
+                        │   ├── bloc
+                        │   │   └── cart
+                        │   │       ├── cart_bloc.dart
+                        │   │       ├── cart_event.dart
+                        │   │       └── cart_state.dart
+                        │   ├── models
+                        │   │   ├── cart_item.dart
+                        │   │   ├── order.dart
+                        │   │   ├── restaut.dart
+                        │   │   └── restaut.g.dart
+                        │   ├── order_repository.dart
+                        │   └── providers
+                        │       └── theme_provider.dart
+                        ├── firebase_options.dart 🟢 (y en a d'autre en dehors de lib)
+                        ├── image_helper.dart
+                        ├── main.dart
+                        ├── note_en_gros.txt
+                        ├── restaurant_data.dart
+                        ├── screens
+                        │   ├── add_card_screen.dart
+                        │   ├── cart_screen.dart
+                        │   ├── home_screen.dart
+                        │   ├── main_screen.dart
+                        │   ├── order_screen.dart
+                        │   ├── profile_screen.dart
+                        │   ├── restaut_detail_screen.dart
+                        │   ├── restaut_list_screen.dart
+                        │   ├── sign_in_screen.dart
+                        │   ├── sign_up_screen.dart
+                        │   ├── splash_screen.dart
+                        │   ├── success_sign_up_screen.dart
+                        │   └── tracking_screen.dart
+                        └── widgets
+                            └── custom_text_field.dart
+
+
+wow comment y avais un probleme dans li'indentation 😒
+bref c est bon l'app marche plutot bien avec le mode sombre, j ai pas encore declencher firebase 
