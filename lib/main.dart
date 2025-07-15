@@ -13,6 +13,7 @@ import 'screens/home_screen.dart';
 import 'screens/sign_in_screen.dart';
 import 'screens/sign_up_screen.dart';
 import 'screens/main_screen.dart';
+import 'core/services/connectivity_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +26,9 @@ void main() async {
     storageDirectory: await getApplicationDocumentsDirectory(),
   );
   HydratedBloc.storage = storage;
+
+  // ➕ Initialisation du service de réseau
+  ConnectivityService().initialize();
 
   runApp(
     MultiProvider(
