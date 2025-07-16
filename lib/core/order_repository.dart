@@ -39,10 +39,10 @@ class OrderRepository extends ChangeNotifier {
     for (final order in _pendingOrders) {
       try {
         await ApiService.postOrder(order.toJson());
-        print('🔁 Commande en attente envoyée : ${order.restaurantName}');
+        print('🔁 Commande en attente envoyée : ${order.name}');
         sent.add(order);
       } catch (e) {
-        print('❌ Envoi échoué pour ${order.restaurantName}');
+        print('❌ Envoi échoué pour ${order.name}');
       }
     }
 
