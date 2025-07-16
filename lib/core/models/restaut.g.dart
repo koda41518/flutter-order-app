@@ -8,15 +8,15 @@ part of 'restaut.dart';
 
 Restaut _$RestautFromJson(Map<String, dynamic> json) => Restaut(
   name: json['name'] as String,
-  imageUrl: json['imageUrl'] as String,
+  image: json['image'] as String,
   description: json['description'] as String,
-  price: (json['price'] as num).toDouble(),
+  price: json['price'] as String,
   rating: (json['rating'] as num).toDouble(),
 );
 
 Map<String, dynamic> _$RestautToJson(Restaut instance) => <String, dynamic>{
   'name': instance.name,
-  'imageUrl': instance.imageUrl,
+  'image': instance.image,
   'description': instance.description,
   'price': instance.price,
   'rating': instance.rating,

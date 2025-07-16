@@ -5,9 +5,9 @@ part 'restaut.g.dart';
 @JsonSerializable()
 class Restaut {
   final String name;
-  final String image;
+  final String image; // anciennement imageUrl
   final String description;
-  final String price; // <-- ici on passe en String
+  final String price; // anciennement double
   final double rating;
 
   Restaut({
