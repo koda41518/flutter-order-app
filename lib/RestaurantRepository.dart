@@ -1,20 +1,42 @@
+import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import '../core/models/restaut.dart';
+import '../core/services/api_service.dart';
 
-class RestaurantRepository {
-  Future<List<Restaut>> getAllRestaurants() async {
-    final data = await rootBundle.loadString('assets/data/restaurants.json');
-    final List<dynamic> list = json.decode(data);
-    return list.map((e) => Restaut.fromJson(e)).toList();
+class RestaurantRepository extends ChangeNotifier {
+  List<Restaut> _restos = [];
+  StreamSubscription<ConnectivityResult>? _sub;
+
+  List<Restaut> get restos => _restos;
+
+  RestaurantRepository() {
+    _init();
   }
 
-  Future<Restaut?> getByName(String name) async {
-    final restos = await getAllRestaurants();
+  Future<void> _init() async {
+    await fetchAll();
+    _sub = Connectivity().onConnectivityChanged.listen((status) {
+      if (status != ConnectivityResult.none) {
+        fetchAll();
+      }
+    });
+  }
+
+  Future<void> fetchAll() async {
     try {
-      return restos.firstWhere((r) => r.name == name);
+      final data = await ApiService.getRestaurants();
+      _restos = data.map((e) => Restaut.fromJson(e)).toList();
+      notifyListeners();
     } catch (_) {
-      return null;
+      // Gérer l'erreur si besoin
     }
+  }
+
+  @override
+  void dispose() {
+    _sub?.cancel();
+    super.dispose();
   }
 }
