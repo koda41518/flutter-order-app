@@ -4,29 +4,42 @@ import '../restaurantRepository.dart';
 import 'restaut_detail_screen.dart';
 import '../image_helper.dart';
 
-class RestautListScreen extends StatelessWidget {
+class RestautListScreen extends StatefulWidget {
   const RestautListScreen({super.key});
+
+  @override
+  State<RestautListScreen> createState() => _RestautListScreenState();
+}
+
+class _RestautListScreenState extends State<RestautListScreen> {
+  final RestaurantRepository _repo = RestaurantRepository();
+  late Future<void> _initFetch;
+
+  @override
+  void initState() {
+    super.initState();
+    _initFetch = _repo.fetchRestaurants();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Restaurants")),
-      body: FutureBuilder<List<Restaut>>(
-        future: RestaurantRepository().getAllRestaurants(),
+      body: FutureBuilder(
+        future: _initFetch,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Erreur : ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          } else if (_repo.restaurants.isEmpty) {
             return const Center(child: Text('Aucun restaurant trouvé.'));
           }
 
-          final restaurants = snapshot.data!;
           return ListView.builder(
-            itemCount: restaurants.length,
+            itemCount: _repo.restaurants.length,
             itemBuilder: (context, index) {
-              final resto = restaurants[index];
+              final resto = _repo.restaurants[index];
               return Card(
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 elevation: 3,
@@ -54,4 +67,4 @@ class RestautListScreen extends StatelessWidget {
       ),
     );
   }
-}
+}Ò

@@ -11,8 +11,10 @@ class OrderRepository extends ChangeNotifier {
   final List<Order> _pendingOrders = [];
 
   List<Order> get orders => List.unmodifiable(_orders);
+
   List<Order> get inProgressOrders =>
       _orders.where((o) => o.status == OrderStatus.inProgress).toList();
+
   List<Order> get pastOrders =>
       _orders.where((o) => o.status != OrderStatus.inProgress).toList();
 
@@ -31,7 +33,7 @@ class OrderRepository extends ChangeNotifier {
     }
   }
 
-  Future<void> retryPendingOrders() async {
+  Future<bool> retryPendingOrders() async {
     final List<Order> sent = [];
 
     for (final order in _pendingOrders) {
@@ -44,7 +46,19 @@ class OrderRepository extends ChangeNotifier {
       }
     }
 
-    // Nettoyage des commandes envoyées
     _pendingOrders.removeWhere((order) => sent.contains(order));
+    return sent.isNotEmpty;
   }
+  Future<void> fetchOrdersFromApi() async {
+  try {
+    final data = await ApiService.getOrders();
+    final ordersFromApi = data.map((json) => Order.fromJson(json)).toList();
+
+    _orders.clear();
+    _orders.addAll(ordersFromApi);
+    notifyListeners();
+  } catch (e) {
+    print('❌ Erreur chargement commandes API : $e');
+  }
+}
 }

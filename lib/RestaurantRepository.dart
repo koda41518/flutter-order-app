@@ -1,18 +1,28 @@
-import 'dart:convert';
-import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
 import '../core/models/restaut.dart';
+import '../core/services/api_service.dart';
 
-class RestaurantRepository {
-  Future<List<Restaut>> getAllRestaurants() async {
-    final data = await rootBundle.loadString('assets/data/restaurants.json');
-    final List<dynamic> list = json.decode(data);
-    return list.map((e) => Restaut.fromJson(e)).toList();
+class RestaurantRepository extends ChangeNotifier {
+  List<Restaut> _restaurants = [];
+
+  List<Restaut> get restaurants => _restaurants;
+
+  Future<void> fetchRestaurants() async {
+    try {
+      final data = await ApiService.getRestaurants();
+      _restaurants = data.map((json) => Restaut.fromJson(json)).toList();
+      notifyListeners();
+    } catch (e) {
+      print('❌ Erreur chargement restaurants : $e');
+    }
   }
 
   Future<Restaut?> getByName(String name) async {
-    final restos = await getAllRestaurants();
+    if (_restaurants.isEmpty) {
+      await fetchRestaurants(); // on les récupère si pas encore fait
+    }
     try {
-      return restos.firstWhere((r) => r.name == name);
+      return _restaurants.firstWhere((r) => r.name == name);
     } catch (_) {
       return null;
     }

@@ -25,4 +25,13 @@ class ApiService {
       throw Exception('Failed to send order');
     }
   }
+  static Future<List<dynamic>> getOrders() async {
+    final response = await http.get(Uri.parse('$baseUrl/orders'));
+
+    if (response.statusCode == 200) {
+        return json.decode(response.body);
+    } else {
+        throw Exception('Failed to load orders');
+    }
+  }
 }

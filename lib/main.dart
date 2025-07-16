@@ -48,6 +48,8 @@ class FoodMarketApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
+    ConnectivityService().setContext(context); // ✅ Ajout ici
+
     return MaterialApp(
       title: 'FoodMarket',
       debugShowCheckedModeBanner: false,

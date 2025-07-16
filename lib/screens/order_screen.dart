@@ -17,6 +17,10 @@ class _OrderScreenState extends State<OrderScreen> with SingleTickerProviderStat
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
+
+    // 🔥 Appel API pour charger les commandes
+    _orderRepo.fetchOrdersFromApi();
+
     super.initState();
   }
 
@@ -32,6 +36,13 @@ class _OrderScreenState extends State<OrderScreen> with SingleTickerProviderStat
           appBar: AppBar(
             title: const Text('Your Orders'),
             backgroundColor: const Color(0xFFFF002B),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: () => _orderRepo.fetchOrdersFromApi(),
+                tooltip: 'Rafraîchir les commandes',
+              ),
+            ],
             bottom: TabBar(
               controller: _tabController,
               labelColor: Colors.white,
