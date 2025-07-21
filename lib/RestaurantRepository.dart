@@ -1,42 +1,18 @@
-import 'dart:async';
-import 'dart:convert';
-import 'package:flutter/foundation.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import '../core/models/restaut.dart';
-import '../core/services/api_service.dart';
+import 'package:food_app/core/models/restaut.dart';
+import 'core/services/google_sheet_service.dart';
 
-class RestaurantRepository extends ChangeNotifier {
-  List<Restaut> _restos = [];
-  StreamSubscription<ConnectivityResult>? _sub;
-
-  List<Restaut> get restos => _restos;
-
-  RestaurantRepository() {
-    _init();
+class RestaurantRepository {
+  Future<List<Restaut>> getAllRestaurants() async {
+    final data = await GoogleSheetService.fetchRestaurants();
+    return data.map((e) => Restaut.fromJson(e)).toList();
   }
 
-  Future<void> _init() async {
-    await fetchAll();
-    _sub = Connectivity().onConnectivityChanged.listen((status) {
-      if (status != ConnectivityResult.none) {
-        fetchAll();
-      }
-    });
-  }
-
-  Future<void> fetchAll() async {
+  Future<Restaut?> getByName(String name) async {
+    final restos = await getAllRestaurants();
     try {
-      final data = await ApiService.getRestaurants();
-      _restos = data.map((e) => Restaut.fromJson(e)).toList();
-      notifyListeners();
+      return restos.firstWhere((r) => r.name == name);
     } catch (_) {
-      // Gérer l'erreur si besoin
+      return null;
     }
-  }
-
-  @override
-  void dispose() {
-    _sub?.cancel();
-    super.dispose();
   }
 }

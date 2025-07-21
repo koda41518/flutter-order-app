@@ -987,3 +987,10 @@ Ajoute de Firebase:
 
 wow comment y avais un probleme dans li'indentation 😒
 bref c est bon l'app marche plutot bien avec le mode sombre, j ai pas encore declencher firebase 
+
+
+
+🧞 ✋😔 c est bon:
+Pour lancer le simulateur ios en faite c'etait pas xcode
+	•	Ouvre Spotlight (Cmd + Espace) et tape : Simulator # oe c est pas the same
+	•	Clique dessus : il lance le simulateur iOS par défaut. #🧍‍♀️
