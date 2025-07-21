@@ -26,7 +26,9 @@ dependencies:
   firebase_storage: ^11.0.0
   firebase_messaging: ^14.7.10
   connectivity_plus: ^4.0.0
-
+  http: ^0.13.0
+  csv: ^5.0.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

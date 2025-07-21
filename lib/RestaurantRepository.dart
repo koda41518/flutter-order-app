@@ -1,5 +1,5 @@
 import 'package:food_app/core/models/restaut.dart';
-import 'core/services/google_sheet_service.dart';
+import 'package:food_app/core/services/google_sheet_service.dart';
 
 class RestaurantRepository {
   Future<List<Restaut>> getAllRestaurants() async {

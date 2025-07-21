@@ -984,13 +984,40 @@ Ajoute de Firebase:
                         └── widgets
                             └── custom_text_field.dart
 
-
-wow comment y avais un probleme dans li'indentation 😒
+---------------------------------------------------------------------------------------------
+eh comment y avais un probleme dans l'indentation 🙉
 bref c est bon l'app marche plutot bien avec le mode sombre, j ai pas encore declencher firebase 
 
 
-
-🧞 ✋😔 c est bon:
+                    ┌─────────────────────────────────────────────────────────┐
+                    │                 🫧 💥 🫷 🧙‍♂️ 🫸 💥                         │
+                    │                                                         │
+                    │  c est boon let's goooooo                               │
+                    └─────────────────────────────────────────────────────────┘
+🧞 ✋😔 c est bon: ------- yes--- 🍏
 Pour lancer le simulateur ios en faite c'etait pas xcode
 	•	Ouvre Spotlight (Cmd + Espace) et tape : Simulator # oe c est pas the same
 	•	Clique dessus : il lance le simulateur iOS par défaut. #🧍‍♀️
+
+
+Changement de cap 🌊:
+	1.	Remplacement du JSON local
+	•	Avant : les restos venaient d’un fichier assets/data/restaurants.json.
+	•	Maintenant : les restos sont stockés dans un Google Sheet → accessible via un lien CSV public.
+	2.	Nouveau service Flutter
+	•	Ajout de google_sheet_service.dart pour :
+	•	Télécharger le CSV
+	•	Le convertir en liste de maps (List<Map<String, dynamic>>)
+	•	Renvoyer les données à afficher dans l’appli
+	3.	Adaptation de RestaurantRepository.dart
+	•	L’ancienne méthode lisait un fichier local.
+	•	Maintenant, elle appelle GoogleSheetService.fetchRestaurants() et mappe chaque ligne CSV vers un objet Restaut.
+	4.	Mise à jour de restaut_list_screen.dart
+	•	Pas de changement majeur à part s’assurer qu’il appelle bien RestaurantRepository.getAllRestaurants().
+
+
+
+    ✅ Résultat
+	•	L' app affiche les restos à partir de Google Sheets, donc modifiables sans recompilation.
+	•	Les images viennent de liens en ligne : plus besoin d’ajouter manuellement des fichiers assets.
+
