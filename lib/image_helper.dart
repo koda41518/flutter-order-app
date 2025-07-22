@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 Widget buildImage(
   String imageUrl, {
@@ -7,12 +8,13 @@ Widget buildImage(
   BoxFit fit = BoxFit.cover,
 }) {
   return imageUrl.startsWith('http')
-      ? Image.network(
-          imageUrl,
+      ? CachedNetworkImage(
+          imageUrl: imageUrl,
           width: width,
           height: height,
           fit: fit,
-          errorBuilder: (_, __, ___) => const Icon(Icons.broken_image),
+          placeholder: (_, __) => const Center(child: CircularProgressIndicator()),
+          errorWidget: (_, __, ___) => const Icon(Icons.broken_image),
         )
       : Image.asset(
           imageUrl,

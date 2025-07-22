@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'core/providers/theme_provider.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'core/providers/auth_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -30,6 +31,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
         BlocProvider(create: (_) => CartBloc()),
       ],
       child: const FoodMarketApp(),

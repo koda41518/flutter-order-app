@@ -1,9 +1,76 @@
-import 'package:flutter/material.dart';
-import '../widgets/custom_text_field.dart';
-import 'sign_up_screen.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
 
-class SignInScreen extends StatelessWidget {
+import 'package:crypto/crypto.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+
+import '../widgets/custom_text_field.dart';
+import '../core/providers/auth_provider.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
+
+  @override
+  State<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
+  final emailCtrl = TextEditingController();
+  final passwordCtrl = TextEditingController();
+  bool loading = false;
+
+  @override
+  void dispose() {
+    emailCtrl.dispose();
+    passwordCtrl.dispose();
+    super.dispose();
+  }
+
+  void _signIn() async {
+    setState(() => loading = true);
+    final ok = await context.read<AuthProvider>()
+        .signIn(emailCtrl.text.trim(), passwordCtrl.text.trim());
+    setState(() => loading = false);
+
+    if (ok) {
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Échec de connexion')),
+      );
+    }
+  }
+
+  String generateNonce(int length) {
+    const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    final rand = Random.secure();
+    return List.generate(length, (_) => chars[rand.nextInt(chars.length)]).join();
+  }
+
+  String sha256ofString(String input) =>
+      sha256.convert(utf8.encode(input)).toString();
+
+  Future<void> _signInWithApple() async {
+    final rawNonce = generateNonce(32);
+    final nonce = sha256ofString(rawNonce);
+
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName],
+      nonce: nonce,
+    );
+
+    final oauthCredential = OAuthProvider("apple.com").credential(
+      idToken: credential.identityToken,
+      rawNonce: rawNonce,
+    );
+
+    await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,70 +86,29 @@ class SignInScreen extends StatelessWidget {
                 const Text("Sign In", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 4),
                 const Text("Find your best ever meal", style: TextStyle(color: Colors.grey)),
-
                 const SizedBox(height: 32),
-                CustomTextField(label: "Email Address", hint: "Type your email address"),
-                CustomTextField(label: "Password", hint: "Type your password", obscure: true),
-
+                CustomTextField(controller: emailCtrl, label: "Email Address", hint: "Type your email address"),
+                CustomTextField(controller: passwordCtrl, label: "Password", hint: "Type your password", obscure: true),
+                const SizedBox(height: 24),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: loading ? null : _signIn,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFFF002B),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     ),
-                    child: const Text("Sign In"),
+                    child: loading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text("Sign In"),
                   ),
                 ),
-
-                TextButton(
-                  onPressed: () {},
-                  child: const Text("Forgot Password?", style: TextStyle(color: Colors.redAccent)),
-                ),
-
-                const SizedBox(height: 16),
-                const Center(child: Text("- OR Continue with -")),
-
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: Icon(Icons.email), // temporaire si pas d'image
-                      label: const Text("Google"),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black,
-                        elevation: 1,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: Icon(Icons.facebook), // temporaire si pas d'image
-                      label: const Text("Facebook"),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFFF5E5E5),
-                        foregroundColor: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 24),
                 Center(
                   child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const SignUpScreen()),
-                      );
-                    },
+                    onPressed: () => Navigator.pushNamed(context, '/sign-up'),
                     child: const Text.rich(
                       TextSpan(
-                        text: "Create An Account ",
+                        text: "Don't have an account? ",
                         children: [
                           TextSpan(
                             text: "Sign Up",
@@ -92,7 +118,37 @@ class SignInScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                )
+                ),
+                const SizedBox(height: 24),
+                const Center(child: Text("- OR Continue with -")),
+                const SizedBox(height: 16),
+                Center(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      // TODO: handle Google Sign-In
+                    },
+                    icon: const Icon(Icons.email),
+                    label: const Text("Sign in with Google"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black,
+                      elevation: 1,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                if (Platform.isIOS)
+                  Center(
+                    child: ElevatedButton.icon(
+                      icon: const Icon(Icons.apple),
+                      label: const Text("Sign in with Apple"),
+                      onPressed: _signInWithApple,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        foregroundColor: Colors.white,
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),

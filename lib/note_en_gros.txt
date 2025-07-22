@@ -1062,6 +1062,7 @@ mais ça prends du temps a chaque fois mais c est normale il va les chercher a  
         •	Il ne faut pas que les images soient “accès restreint”, sinon elles ne seront pas visibles dans ton app.
 
 🧙‍♂️ : c'est juste une possibilité on va pas le faire paceque flemme 
+il doit y avoir une autre possibilité ⭐️ 🧙‍♂️ 
 bref voila
 🧙‍♂️🫸l instant l arbre : lib                             
                         ├── RestaurantRepository.dart <---- on l'a bien modifier
@@ -1081,7 +1082,7 @@ bref voila
                         │   │   └── theme_provider.dart
                         │   └── services
                         │       └── google_sheet_service.dart. <---- backend
-                        ├── firebase_options.dart <---- c est lui qu on doit attaquer maintenant
+                        ├── firebase_options.dart <---- c est lui qu on doit attaquer maintenant ⭐︎--- 🫷🧙‍♂️🫸 ---⭐︎
                         ├── image_helper.dart
                         ├── main.dart
                         ├── note_en_gros.txt
@@ -1102,3 +1103,69 @@ bref voila
                         │   └── tracking_screen.dart
                         └── widgets
                             └── custom_text_field.dart
+🧙‍♂️  🫸 ---⭐︎  :                        
+    Fonctionnalité                          Solution choisie             Détails
+    📋 Données des restaurants              Google Sheets CSV           Lecture seule, facile à modifier
+    👤 Authentification utilisateurs        Firebase Auth               Email, Google, etc. + gestion de session
+    🔐 Sécurité utilisateurs                Firebase Auth               Tokens, sessions persistantes, logout
+    🧾 Commandes et historique              Firebase Firestore          Base NoSQL pour stocker commandes, utilisateurs, etc.
+    📦 Stockage des images (profil)         Firebase Storage            Upload/lecture d’images de profil/restaurants
+    🔔 Notifications push                   Firebase Messaging          Notifications en cas de commande, promo, etc.
+
+
+  ⭐
+  ││.  Ce qui en place
+🧙‍♂️🫴	   1.	Firebase initialisé dans main.dart
+        2.	AuthProvider pour gérer les utilisateurs avec AuthService
+        3.	Ecrans Sign‑In / Sign‑Up modifiés pour appeler les méthodes signIn() / signUp() du provider
+        4.	Changement de page après connexion réussie avec Navigator.pushReplacementNamed(...)
+        5.	Gestion du thème dark/light via ThemeProvider
+        6.	RestaurantRepository depuis Google Sheets (JSON/CSV externes)
+        7.	Panier (CartBloc) avec persistance locale (hydrated_bloc)
+        8.	Réduction des redondances via image_helper.dart
+
+
+🧙‍♂️🫸l instant l arbre : lib  
+                        ├── RestaurantRepository.dart
+                        ├── core
+                        │   ├── bloc
+                        │   │   └── cart
+                        │   │       ├── cart_bloc.dart
+                        │   │       ├── cart_event.dart
+                        │   │       └── cart_state.dart
+                        │   ├── models
+                        │   │   ├── cart_item.dart
+                        │   │   ├── order.dart
+                        │   │   ├── restaut.dart
+                        │   │   ├── restaut.g.dart
+                        │   │   └── user_model.dart  🟢
+                        │   ├── order_repository.dart
+                        │   ├── providers
+                        │   │   ├── auth_provider.dart  🟢
+                        │   │   └── theme_provider.dart
+                        │   └── services
+                        │       ├── auth_service.dart  🟢
+                        │       ├── firestore_service.dart  🟢
+                        │       └── google_sheet_service.dart
+                        ├── firebase_options.dart
+                        ├── image_helper.dart 🌕 <----- ⭐️ 🧙‍♂️va charger les images et evite les pb de lagging 
+                        ├── main.dart 🌕
+                        ├── note_en_gros.txt 🌕 #lui aussi ducoup haha
+                        ├── restaurant_data.dart
+                        ├── screens
+                        │   ├── add_card_screen.dart
+                        │   ├── cart_screen.dart
+                        │   ├── home_screen.dart
+                        │   ├── main_screen.dart
+                        │   ├── order_screen.dart
+                        │   ├── profile_screen.dart
+                        │   ├── restaut_detail_screen.dart
+                        │   ├── restaut_list_screen.dart
+                        │   ├── sign_in_screen.dart 🌕
+                        │   ├── sign_up_screen.dart 🌕
+                        │   ├── splash_screen.dart
+                        │   ├── success_sign_up_screen.dart
+                        │   └── tracking_screen.dart
+                        └── widgets
+                            └── custom_text_field.dart
+
