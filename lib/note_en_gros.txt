@@ -1021,3 +1021,6 @@ Changement de cap 🌊:
 	•	L' app affiche les restos à partir de Google Sheets, donc modifiables sans recompilation.
 	•	Les images viennent de liens en ligne : plus besoin d’ajouter manuellement des fichiers assets.
 
+
+
+bon l iphone ne marche pas et ugh
