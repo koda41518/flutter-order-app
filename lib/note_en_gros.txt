@@ -863,8 +863,8 @@ on a mis en place les base pour 🧠 hydrated_bloc  donc
 
 
 
- 🧍‍♀️euh  🧌:
-    j ai rajouter un mode sombre, c est pas le plus important mais voila , en plus il est pris en charge pas flutter , 
+ 🧍‍♀️euh  🧌: 
+    j ai rajouter un mode sombre 🦇, c est pas le plus important mais voila , en plus il est pris en charge pas flutter , 
     mon idée de base etait juste d avoir un bool qui sert le verification mais cette idée ne permet pas l automatisation  
     et ne ol applique pas sur tout et ne modifie pas le text, doucoup on a crée un autre fichier 
 
@@ -1022,5 +1022,83 @@ Changement de cap 🌊:
 	•	Les images viennent de liens en ligne : plus besoin d’ajouter manuellement des fichiers assets.
 
 
+🛜 🫷🧙‍♂️
+bon l iphone ne marche pas et ugh pas grave pour l instant ça marche sur androide et les image se charge bien , 
+mais ça prends du temps a chaque fois mais c est normale il va les chercher a  chaque fois sur internet  🧙‍♂️  .
 
-bon l iphone ne marche pas et ugh
+
+🧙‍♂️:je me demandais , si je voulais avoir une bibliotheque d image que l api recherche , se serait possible de les mettre dans un drive public ?
+
+👾 : Yes, totalement possible ! Tu peux te servir de Google Drive comme une bibliothèque d’images en ligne 🎨📂
+
+    Voici comment faire ça proprement :
+
+    ⸻
+
+    ✅ Utiliser Google Drive pour héberger les images de ton app
+
+    🔹 1. Uploader les images dans un dossier Drive
+        •	Crée un dossier Google Drive (ex: resto_images)
+        •	Uploade toutes tes images dedans
+
+    🔹 2. **Rendre le dossier public
+        •	Clique droit → “Partager” → “Changer en ‘Toute personne ayant le lien peut voir’”
+        •	Garde l’ID du dossier : c’est dans l’URL (ex: https://drive.google.com/drive/folders/**1aBcD3...**)
+
+    🔹 3. Générer des liens d’images exploitables
+
+    Tu dois transformer les IDs des fichiers Drive en liens d’accès direct au contenu :
+
+    https://drive.google.com/uc?export=view&id=TON_IMAGE_ID
+
+    Exemple :
+    Pour une image avec ID 1aBcD3EfGHi, le lien devient :
+    👉 https://drive.google.com/uc?export=view&id=1aBcD3EfGHi
+
+    ⸻
+
+    ⚠️ Attention
+        •	Google Drive ne gère pas les miniatures dynamiques comme un CDN. Les performances sont correctes mais pas aussi rapides qu’Unsplash ou un vrai hébergeur d’images.
+        •	Il ne faut pas que les images soient “accès restreint”, sinon elles ne seront pas visibles dans ton app.
+
+🧙‍♂️ : c'est juste une possibilité on va pas le faire paceque flemme 
+bref voila
+🧙‍♂️🫸l instant l arbre : lib                             
+                        ├── RestaurantRepository.dart <---- on l'a bien modifier
+                        ├── core
+                        │   ├── bloc
+                        │   │   └── cart
+                        │   │       ├── cart_bloc.dart
+                        │   │       ├── cart_event.dart
+                        │   │       └── cart_state.dart
+                        │   ├── models
+                        │   │   ├── cart_item.dart
+                        │   │   ├── order.dart
+                        │   │   ├── restaut.dart
+                        │   │   └── restaut.g.dart
+                        │   ├── order_repository.dart
+                        │   ├── providers
+                        │   │   └── theme_provider.dart
+                        │   └── services
+                        │       └── google_sheet_service.dart. <---- backend
+                        ├── firebase_options.dart <---- c est lui qu on doit attaquer maintenant
+                        ├── image_helper.dart
+                        ├── main.dart
+                        ├── note_en_gros.txt
+                        ├── restaurant_data.dart
+                        ├── screens
+                        │   ├── add_card_screen.dart
+                        │   ├── cart_screen.dart
+                        │   ├── home_screen.dart
+                        │   ├── main_screen.dart
+                        │   ├── order_screen.dart
+                        │   ├── profile_screen.dart
+                        │   ├── restaut_detail_screen.dart
+                        │   ├── restaut_list_screen.dart
+                        │   ├── sign_in_screen.dart
+                        │   ├── sign_up_screen.dart
+                        │   ├── splash_screen.dart
+                        │   ├── success_sign_up_screen.dart
+                        │   └── tracking_screen.dart
+                        └── widgets
+                            └── custom_text_field.dart

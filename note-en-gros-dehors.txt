@@ -48,7 +48,7 @@ donc pour la premiere etape :
         └── custom_text_field.dart
 
 
-
+le code de 
 cart_repository.dart :
     import 'models/cart_item.dart';
     import 'models/restaut.dart';
@@ -110,3 +110,67 @@ cart_repository.dart :
     double get totalPrice => _items.fold(
         0.0, (total, item) => total + item.quantity * item.resto.price);
     }
+---------------------------------------------------------------------------------------------
+on a pris une autre direction totalement finalement paceque flemme :
+    🔁 Remplacement du JSON local
+	•	Avant : Les restaurants étaient codés en dur dans un fichier local assets/data/restaurants.json.
+	•	Maintenant : Les données sont récupérées en direct depuis Google Sheets (format CSV publié en ligne).
+
+    ⸻
+
+    🧠 Nouvelle architecture
+        •	google_sheet_service.dart
+    → Récupère le CSV depuis l’URL Google Sheets
+    → Parse les lignes CSV en une liste de Map<String, String>
+        •	RestaurantRepository.dart
+    → Transforme ces maps en objets Restaut
+    → Sert d’interface unique pour accéder à la liste de restaurants
+    ⸻
+
+    ✅ Résultat final
+        •	📱 Appli Flutter complète (affichage, navigation, panier, commandes)
+        •	🔗 Données dynamiques et distantes via Google Sheets
+        •	🔒 Zéro backend nécessaire
+        •	⚙️ Maintenance ultra simple → Juste modifier le tableau Google Sheets
+
+
+🧙‍♂️🫸l instant l arbre : lib                             
+                        ├── RestaurantRepository.dart
+                        ├── core
+                        │   ├── bloc
+                        │   │   └── cart
+                        │   │       ├── cart_bloc.dart
+                        │   │       ├── cart_event.dart
+                        │   │       └── cart_state.dart
+                        │   ├── models
+                        │   │   ├── cart_item.dart
+                        │   │   ├── order.dart
+                        │   │   ├── restaut.dart
+                        │   │   └── restaut.g.dart
+                        │   ├── order_repository.dart
+                        │   ├── providers
+                        │   │   └── theme_provider.dart
+                        │   └── services
+                        │       └── google_sheet_service.dart. <---- backend
+                        ├── firebase_options.dart
+                        ├── image_helper.dart
+                        ├── main.dart
+                        ├── note_en_gros.txt
+                        ├── restaurant_data.dart
+                        ├── screens
+                        │   ├── add_card_screen.dart
+                        │   ├── cart_screen.dart
+                        │   ├── home_screen.dart
+                        │   ├── main_screen.dart
+                        │   ├── order_screen.dart
+                        │   ├── profile_screen.dart
+                        │   ├── restaut_detail_screen.dart
+                        │   ├── restaut_list_screen.dart
+                        │   ├── sign_in_screen.dart
+                        │   ├── sign_up_screen.dart
+                        │   ├── splash_screen.dart
+                        │   ├── success_sign_up_screen.dart
+                        │   └── tracking_screen.dart
+                        └── widgets
+                            └── custom_text_field.dart
+
