@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user_model.dart';
-import '../models/order.dart';
+import '../models/order.dart' as myorder;
 
 class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -14,15 +14,15 @@ class FirestoreService {
     return UserModel.fromMap(snap.data()!);
   }
 
-  Future<void> saveOrder(String uid, Order order) =>
+  Future<void> saveOrder(String uid, myorder.Order order) =>
       _db.collection('users').doc(uid).collection('orders').add(order.toMap());
 
-  Stream<List<Order>> ordersStream(String uid) =>
+  Stream<List<myorder.Order>> ordersStream(String uid) =>
       _db
           .collection('users')
           .doc(uid)
           .collection('orders')
           .orderBy('date', descending: true)
           .snapshots()
-          .map((snap) => snap.docs.map((d) => Order.fromMap(d.data())).toList());
+          .map((snap) => snap.docs.map((d) => myorder.Order.fromMap(d.data())).toList());
 }

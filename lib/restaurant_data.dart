@@ -8,3 +8,5 @@ Future<List<Restaut>> loadRestaurantsFromJson() async {
 
   return jsonData.map((data) => Restaut.fromJson(data)).toList();
 }
+
+// maybe ce fichier ne sert plus a rien vu que je ramene les restau mn l api google sheet so 

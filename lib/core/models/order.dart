@@ -20,4 +20,26 @@ class Order {
     this.status = OrderStatus.inProgress,
     DateTime? date,
   }) : date = date ?? DateTime.now();
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'image': image,
+      'itemCount': itemCount,
+      'price': price,
+      'status': status.name,
+      'date': date.toIso8601String(),
+    };
+  }
+
+  factory Order.fromMap(Map<String, dynamic> map) {
+    return Order(
+      name: map['name'] ?? '',
+      image: map['image'] ?? '',
+      itemCount: (map['itemCount'] as num).toInt(),
+      price: (map['price'] as num).toDouble(),
+      status: OrderStatus.values.firstWhere((s) => s.name == map['status']),
+      date: DateTime.parse(map['date']),
+    );
+  }
 }

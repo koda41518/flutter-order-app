@@ -3,14 +3,15 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:crypto/crypto.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
+
 import '../widgets/custom_text_field.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
 import '../core/providers/auth_provider.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -33,8 +34,10 @@ class _SignInScreenState extends State<SignInScreen> {
 
   void _signIn() async {
     setState(() => loading = true);
-    final ok = await context.read<AuthProvider>()
-        .signIn(emailCtrl.text.trim(), passwordCtrl.text.trim());
+    final ok = await context.read<AuthProvider>().signIn(
+      emailCtrl.text.trim(),
+      passwordCtrl.text.trim(),
+    );
     setState(() => loading = false);
 
     if (ok) {
@@ -70,6 +73,7 @@ class _SignInScreenState extends State<SignInScreen> {
     );
 
     await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+    Navigator.pushReplacementNamed(context, '/home');
   }
 
   @override
@@ -124,8 +128,15 @@ class _SignInScreenState extends State<SignInScreen> {
                 const SizedBox(height: 16),
                 Center(
                   child: ElevatedButton.icon(
-                    onPressed: () {
-                      // TODO: handle Google Sign-In
+                    onPressed: () async {
+                      final user = await context.read<AuthProvider>().signInWithGoogle();
+                      if (user != null) {
+                        Navigator.pushReplacementNamed(context, '/home');
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Connexion Google échouée")),
+                        );
+                      }
                     },
                     icon: const Icon(Icons.email),
                     label: const Text("Sign in with Google"),

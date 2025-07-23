@@ -27,6 +27,21 @@ class AuthProvider extends ChangeNotifier {
     return u != null;
   }
 
+
+  Future<UserModel?> signInWithGoogle() async {
+    final u = await _service.signInWithGoogle();
+    if (u != null) user = u;
+    notifyListeners();
+    return user;
+  }
+
+  Future<UserModel?> signInWithApple() async {
+    final u = await _service.signInWithApple();
+    if (u != null) user = u;
+    notifyListeners();
+    return user;
+  }
+
   Future<void> signOut() async {
     await _service.signOut();
     user = null;
