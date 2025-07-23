@@ -48,7 +48,7 @@ class FoodMarketApp extends StatelessWidget {
     return MaterialApp(
       title: 'FoodMarket',
       debugShowCheckedModeBanner: false,
-      themeMode: themeProvider.currentTheme,
+      themeMode: context.watch<ThemeProvider>().state,
       theme: ThemeData(
         brightness: Brightness.light,
         scaffoldBackgroundColor: Colors.white,

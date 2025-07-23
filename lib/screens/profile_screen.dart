@@ -118,11 +118,11 @@ class _AccountTabState extends State<_AccountTab> {
         ListTile(
           leading: const Icon(Icons.brightness_6),
           title: const Text('Mode sombre'),
-          trailing: Consumer<ThemeProvider>(
-            builder: (context, themeProvider, _) => Switch(
-              value: themeProvider.isDarkMode,
-              onChanged: (value) {
-                themeProvider.toggleTheme(value);
+          trailing: BlocBuilder<ThemeProvider, ThemeMode>(
+            builder: (context, themeMode) => Switch(
+              value: themeMode == ThemeMode.dark,
+              onChanged: (_) {
+                context.read<ThemeProvider>().toggleTheme();
               },
             ),
           ),
