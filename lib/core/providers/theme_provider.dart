@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-class ThemeProvider with ChangeNotifier {
-  bool _isDarkMode = false;
+class ThemeProvider extends HydratedCubit<ThemeMode> {
+  ThemeProvider() : super(ThemeMode.light);
 
-  bool get isDarkMode => _isDarkMode;
-
-  void toggleTheme(bool isOn) {
-    _isDarkMode = isOn;
-    notifyListeners();
+  void toggleTheme() {
+    emit(state == ThemeMode.light ? ThemeMode.dark : ThemeMode.light);
   }
 
-  ThemeMode get currentTheme => _isDarkMode ? ThemeMode.dark : ThemeMode.light;
+  @override
+  ThemeMode fromJson(Map<String, dynamic> json) {
+    return ThemeMode.values[json['theme'] as int];
+  }
+
+  @override
+  Map<String, dynamic> toJson(ThemeMode state) {
+    return {'theme': state.index};
+  }
+
+  ThemeMode get currentTheme => state;
 }
