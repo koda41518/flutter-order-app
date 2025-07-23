@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'add_card_screen.dart';
 import 'package:provider/provider.dart';
 import '../core/providers/theme_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
