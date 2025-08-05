@@ -12,9 +12,9 @@ import 'package:path_provider/path_provider.dart';
 
 import 'package:provider/provider.dart';
 import 'core/providers/theme_provider.dart';
-
-import 'package:firebase_core/firebase_core.dart';
 import 'core/providers/auth_provider.dart';
+import 'core/providers/state_profile_provider.dart'; // 🧙‍♂️
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -30,14 +30,16 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        BlocProvider(create: (_) => ThemeProvider()),
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
-        BlocProvider(create: (_) => CartBloc()),
+        BlocProvider(create: (_) => ThemeProvider()),                    //  Thème
+        BlocProvider(create: (_) => StateProfileProvider()),            //  Profil utilisateur
+        ChangeNotifierProvider(create: (_) => AuthProvider()),          //  Auth
+        BlocProvider(create: (_) => CartBloc()),                        //  Panier
       ],
       child: const FoodMarketApp(),
     ),
   );
 }
+
 class FoodMarketApp extends StatelessWidget {
   const FoodMarketApp({super.key});
 
@@ -48,7 +50,7 @@ class FoodMarketApp extends StatelessWidget {
     return MaterialApp(
       title: 'FoodMarket',
       debugShowCheckedModeBanner: false,
-      themeMode: context.watch<ThemeProvider>().state,
+      themeMode: themeProvider.state,
       theme: ThemeData(
         brightness: Brightness.light,
         scaffoldBackgroundColor: Colors.white,
@@ -59,11 +61,12 @@ class FoodMarketApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.black,
         appBarTheme: const AppBarTheme(backgroundColor: Colors.grey),
       ),
-      home: const MainScreen(),
+      home: const SplashScreen(), // ✅ Lancement depuis Splash
       routes: {
         '/sign-in': (context) => const SignInScreen(),
         '/sign-up': (context) => const SignUpScreen(),
         '/home': (context) => const HomeScreen(),
+        '/main': (context) => const MainScreen(),
       },
     );
   }

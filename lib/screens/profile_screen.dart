@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'add_card_screen.dart';
-import 'package:provider/provider.dart';
 import '../core/providers/theme_provider.dart';
+import '../core/providers/state_profile_provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -43,10 +43,8 @@ class _AccountTab extends StatefulWidget {
 }
 
 class _AccountTabState extends State<_AccountTab> {
-  String fullName = 'John Doe';
-  String email = 'johndoe@example.com';
-  int? selectedIconIndex = 0;
-  File? imageFile;
+  final String defaultFullName = 'John Doe';
+  final String email = 'johndoe@example.com';
 
   final List<IconData> icons = [
     Icons.person,
@@ -62,73 +60,90 @@ class _AccountTabState extends State<_AccountTab> {
 
   @override
   Widget build(BuildContext context) {
-    Widget avatar;
-    if (imageFile != null) {
-      avatar = CircleAvatar(radius: 50, backgroundImage: FileImage(imageFile!));
-    } else if (selectedIconIndex != null) {
-      avatar = CircleAvatar(radius: 50, child: Icon(icons[selectedIconIndex!], size: 48));
-    } else {
-      avatar = const CircleAvatar(radius: 50, child: Icon(Icons.person, size: 48));
-    }
+    return BlocBuilder<StateProfileProvider, ProfileState>(
+      builder: (context, state) {
+        Widget avatar;
 
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        Center(child: avatar),
-        const SizedBox(height: 8),
-        Center(
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFF002B)),
-            onPressed: _chooseProfilePicture,
-            child: const Text('Modifier le profil'),
-          ),
-        ),
-        const SizedBox(height: 16),
-        ListTile(
-          leading: const Icon(Icons.person),
-          title: Text(fullName),
-          subtitle: const Text('Full Name'),
-          trailing: IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () => _editDialog(context, 'Full Name', fullName, (val) {
-              setState(() => fullName = val);
-            }),
-          ),
-        ),
-        ListTile(
-          leading: const Icon(Icons.credit_card),
-          title: const Text('Ajouter une carte'),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const AddCardScreen()),
-            );
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.email),
-          title: Text(email),
-          subtitle: const Text('Email'),
-          trailing: IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () => _editDialog(context, 'Email', email, (val) {
-              setState(() => email = val);
-            }),
-          ),
-        ),
-        ListTile(
-          leading: const Icon(Icons.brightness_6),
-          title: const Text('Mode sombre'),
-          trailing: BlocBuilder<ThemeProvider, ThemeMode>(
-            builder: (context, themeMode) => Switch(
-              value: themeMode == ThemeMode.dark,
-              onChanged: (_) {
-                context.read<ThemeProvider>().toggleTheme();
+        if (state.photoPath != null) {
+          avatar = CircleAvatar(
+            radius: 50,
+            backgroundImage: FileImage(File(state.photoPath!)),
+          );
+        } else if (state.iconIndex != null) {
+          avatar = CircleAvatar(
+            radius: 50,
+            child: Icon(icons[state.iconIndex!], size: 48),
+          );
+        } else {
+          avatar = const CircleAvatar(
+            radius: 50,
+            child: Icon(Icons.person, size: 48),
+          );
+        }
+
+        return ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            Center(child: avatar),
+            const SizedBox(height: 8),
+            Center(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFF002B)),
+                onPressed: _chooseProfilePicture,
+                child: const Text('Modifier le profil'),
+              ),
+            ),
+            const SizedBox(height: 16),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: Text(state.name ?? defaultFullName),
+              subtitle: const Text('Full Name'),
+              trailing: IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () => _editDialog(
+                  context,
+                  'Full Name',
+                  state.name ?? '',
+                  (val) {
+                    context.read<StateProfileProvider>().updateName(val);
+                  },
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.credit_card),
+              title: const Text('Ajouter une carte'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const AddCardScreen()),
+                );
               },
             ),
-          ),
-        ),
-      ],
+            ListTile(
+              leading: const Icon(Icons.email),
+              title: Text(email),
+              subtitle: const Text('Email'),
+              trailing: IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () => _editDialog(context, 'Email', email, (val) {}),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.brightness_6),
+              title: const Text('Mode sombre'),
+              trailing: BlocBuilder<ThemeProvider, ThemeMode>(
+                builder: (context, themeMode) => Switch(
+                  value: themeMode == ThemeMode.dark,
+                  onChanged: (_) {
+                    context.read<ThemeProvider>().toggleTheme();
+                  },
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -144,10 +159,7 @@ class _AccountTabState extends State<_AccountTab> {
               onTap: () async {
                 final picked = await picker.pickImage(source: ImageSource.camera);
                 if (picked != null) {
-                  setState(() {
-                    imageFile = File(picked.path);
-                    selectedIconIndex = null;
-                  });
+                  context.read<StateProfileProvider>().updatePhotoPath(picked.path);
                 }
                 Navigator.pop(context);
               },
@@ -158,10 +170,7 @@ class _AccountTabState extends State<_AccountTab> {
               onTap: () async {
                 final picked = await picker.pickImage(source: ImageSource.gallery);
                 if (picked != null) {
-                  setState(() {
-                    imageFile = File(picked.path);
-                    selectedIconIndex = null;
-                  });
+                  context.read<StateProfileProvider>().updatePhotoPath(picked.path);
                 }
                 Navigator.pop(context);
               },
@@ -190,10 +199,7 @@ class _AccountTabState extends State<_AccountTab> {
           children: List.generate(icons.length, (i) {
             return GestureDetector(
               onTap: () {
-                setState(() {
-                  selectedIconIndex = i;
-                  imageFile = null;
-                });
+                context.read<StateProfileProvider>().updateIconIndex(i);
                 Navigator.pop(context);
               },
               child: CircleAvatar(child: Icon(icons[i])),
@@ -218,7 +224,10 @@ class _AccountTabState extends State<_AccountTab> {
         title: Text('Edit $field'),
         content: TextField(controller: controller),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFF002B)),
             onPressed: () {
