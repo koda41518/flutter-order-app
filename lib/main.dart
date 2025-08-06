@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'core/providers/theme_provider.dart';
 import 'core/providers/auth_provider.dart';
 import 'core/providers/state_profile_provider.dart'; // 🧙‍♂️
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,7 +62,7 @@ class FoodMarketApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.black,
         appBarTheme: const AppBarTheme(backgroundColor: Colors.grey),
       ),
-      home: const SplashScreen(), // ✅ Lancement depuis Splash
+      home: const MainScreen(), // ✅ Lancement depuis mainscreen 
       routes: {
         '/sign-in': (context) => const SignInScreen(),
         '/sign-up': (context) => const SignUpScreen(),
