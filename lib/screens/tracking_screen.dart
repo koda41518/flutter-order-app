@@ -35,7 +35,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
         content = Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset('assets/images/delivery_in_progress.png', width: 120),
+            Image.asset('assets/images/success_order.png', width: 120),
             const SizedBox(height: 16),
             Text(text, style: const TextStyle(fontSize: 24)),
           ],
@@ -46,7 +46,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
         content = Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.delivery_dining, size: 80, color: Colors.red),
+            Image.asset('assets/images/delivery_in_progress.png', width: 120),
             const SizedBox(height: 16),
             Text(text, style: const TextStyle(fontSize: 24)),
           ],
