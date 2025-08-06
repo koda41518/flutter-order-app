@@ -3,7 +3,7 @@ import '../core/models/order.dart';
 
 class TrackingScreen extends StatefulWidget {
   final Order order;
-  const TrackingScreen({ super.key, required this.order });
+  const TrackingScreen({super.key, required this.order});
 
   @override
   State<TrackingScreen> createState() => _TrackingScreenState();
@@ -13,7 +13,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
   late OrderStatus status;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     status = widget.order.status;
     _simulateProgress();
@@ -25,33 +25,49 @@ class _TrackingScreenState extends State<TrackingScreen> {
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     String text;
-    IconData icon;
+    Widget content;
+
     switch (status) {
       case OrderStatus.inProgress:
         text = 'Préparation en cours…';
-        icon = Icons.kitchen;
+        content = Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset('assets/images/delivery_in_progress.png', width: 120),
+            const SizedBox(height: 16),
+            Text(text, style: const TextStyle(fontSize: 24)),
+          ],
+        );
         break;
       case OrderStatus.completed:
         text = 'Commande en route !';
-        icon = Icons.delivery_dining;
+        content = Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.delivery_dining, size: 80, color: Colors.red),
+            const SizedBox(height: 16),
+            Text(text, style: const TextStyle(fontSize: 24)),
+          ],
+        );
         break;
       case OrderStatus.cancelled:
         text = 'Commande annulée';
-        icon = Icons.cancel;
+        content = Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.cancel, size: 80, color: Colors.red),
+            const SizedBox(height: 16),
+            Text(text, style: const TextStyle(fontSize: 24)),
+          ],
+        );
         break;
     }
 
     return Scaffold(
       appBar: AppBar(title: const Text('Suivi de commande')),
-      body: Center(
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Icon(icon, size: 80, color: Colors.red),
-          const SizedBox(height: 16),
-          Text(text, style: const TextStyle(fontSize: 24)),
-        ]),
-      ),
+      body: Center(child: content),
     );
   }
 }
