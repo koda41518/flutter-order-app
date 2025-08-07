@@ -7,6 +7,7 @@ import '../core/bloc/cart/cart_bloc.dart';
 import '../core/bloc/cart/cart_event.dart';
 import '../core/bloc/cart/cart_state.dart';
 import 'tracking_screen.dart';
+import '../core/order_repository.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -200,6 +201,8 @@ class CartScreen extends StatelessWidget {
                               date: DateTime.now(),
                               status: OrderStatus.inProgress,
                             );
+                            OrderRepository().add(newOrder);
+
                             Navigator.pop(ctx);
                             context.read<CartBloc>().add(ClearCart());
                             Navigator.push(
@@ -225,6 +228,16 @@ class CartScreen extends StatelessWidget {
       },
     );
   }
+
+
+
+
+
+
+
+
+
+
 
   String _mapToAssetImage(String name) {
     final normalized = name.toLowerCase();
